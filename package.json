@@ -1,5 +1,5 @@
 {
-  "name": "udemy-react-project",
+  "name": "photo-app-project",
   "version": "1.0.0",
   "description": "panel administracyjny - strona fotografa",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "website, photo"
   ],
   "author": "Paweł Ślimko",
-  "license": "MIT",
+  "license": "",
   "dependencies": {
     "axios": "^0.21.1",
     "bem-css-modules": "^1.4.2",
