@@ -1,8 +1,8 @@
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import request from '../helpers/request';
 
-export const StoreContext = createContext(null);
+
 
 
 const StoreProvider = ({ children }) => {
@@ -23,15 +23,17 @@ const StoreProvider = ({ children }) => {
 
 
   return (
-    <StoreContext.Provider value={
+    <StoreContext.Provider value={{
       user,
       setUser,
       photos,
       setPhotos
-    }>
+    }}>
       {children}
     </StoreContext.Provider>
   )
 };
+
+export const StoreContext = createContext(StoreProvider);
 
 export default StoreProvider;

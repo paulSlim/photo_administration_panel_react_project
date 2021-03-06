@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  height: 100px;
+  background-color: lightseagreen;
+  border-bottom: 2px solid green;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  &__title {
+    align-self: center;
+    flex-grow: 1;
+  }
+
+  &__btn-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: space-evenly;
+  }
+
+  &__fn-btn {
+    align-items: center;
+    height: 3em;
+    width: 24vw;
+
+  }
+  
+}
+
+

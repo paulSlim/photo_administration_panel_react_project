@@ -1,0 +1,14 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+
+  &__validation {
+    color: red
+  }
+
+  &__login-input {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+  }
+}
