@@ -2,9 +2,6 @@ import React, { createContext, useEffect, useState } from 'react';
 
 import request from '../helpers/request';
 
-
-
-
 const StoreProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
@@ -17,7 +14,11 @@ const StoreProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // if (user) {
+    //   if (user.accessLevel === 1) {
     fetchPhotoData();
+    //   }
+    // } else return;
   }, []);
 
 

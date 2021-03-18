@@ -1,0 +1,23 @@
+.photo-card {
+  max-width: 23vw;
+  height: 23vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 15px 0 0 15px;
+  border-radius: 5%;
+  cursor: pointer;
+
+  &__image {
+    max-width: 23vw;
+    height: 23vh;
+    object-fit: scale-down;
+    border-radius: 5%;
+  }
+
+  &__info {
+    list-style-type: none;
+    font-size: 16px;
+  }
+}
+
