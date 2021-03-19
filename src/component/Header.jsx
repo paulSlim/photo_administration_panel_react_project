@@ -11,7 +11,7 @@ const style = bemCssModules(HeaderStyles);
 
 const Header = () => {
   const [isModalActive, setIsModalActive] = useState(false);
-  const [switchModal, setSwitchModal] = useState({
+  const [modalContent, setModalContent] = useState({
     isLoginFormActive: false,
     isAddPhotoActive: false,
   });
@@ -31,10 +31,7 @@ const Header = () => {
       isAddPhotoActive: false,
     };
     switchModalTemp.[property] = true;
-
-    console.log(switchModalTemp);
-    setSwitchModal(switchModalTemp);
-
+    setModalContent(switchModalTemp);
   }
 
   const isUserLogged = user ? 'Wyloguj się' : 'Zaloguj się';
@@ -49,8 +46,8 @@ const Header = () => {
         <button className={style('fn-btn')} disabled={false}>Grupuj</button>
         <button onClick={() => handleOnClickLogin("isLoginFormActive")} className={style('fn-btn')}>{isUserLogged}</button>
       </div>
-      {switchModal.isAddPhotoActive && <AddPhoto handleClose={handleClose} isModalActive={isModalActive} />}
-      {switchModal.isLoginFormActive && <LoginForm handleClose={handleClose} isModalActive={isModalActive} />}
+      {modalContent.isAddPhotoActive && <AddPhoto handleClose={handleClose} isModalActive={isModalActive} />}
+      {modalContent.isLoginFormActive && <LoginForm handleClose={handleClose} isModalActive={isModalActive} />}
     </header>
   );
 };
