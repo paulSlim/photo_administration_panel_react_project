@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import bemCssModules from 'bem-css-modules';
-// import { StoreContext } from '../store/StoreProvider';
+import { StoreContext } from '../store/StoreProvider';
+
+import request from '../helpers/request';
 
 import Modal from './Modal';
 import { default as AddPhotoStyle } from './AddPhoto.module.scss';
@@ -16,6 +18,8 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
   const [keywords, setKeywords] = useState('');
   const [theme, setTheme] = useState('');
 
+  const { fetchPhotoData } = useContext(StoreContext);
+
   const handleFileInput = e => {
     const file = e.target.files[0];
     setSelectedFile(e.target.files[0]);
@@ -27,9 +31,27 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
     handleClose();
   }
 
-  const handlePhotoSubmit = e => {
+  const handlePhotoSubmit = async e => {
     e.preventDefault();
-
+    // const test = {
+    //   fileName,
+    //   title,
+    //   description,
+    //   keywords,
+    //   theme
+    // };
+    // console.log(test);
+    const { data, status } = await request.post(
+      '/photos',
+      { selectedFile, fileName, title, description, keywords, theme }
+    );
+    if (status === 201) {
+      fetchPhotoData();
+      clearModal();
+      handleClose();
+    } else {
+      setValidation(data.message);
+    }
   }
 
 
@@ -38,7 +60,7 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
       <form className={style()} method="post" encType="multipart/form-data" onSubmit={handlePhotoSubmit}>
         <div>
           <label>Załaduj zdjęcie
-          <input onChange={handleFileInput} type="file" value={selectedFile} />
+          <input onChange={handleFileInput} type="file" defaultValue={selectedFile} />
           </label>
           <label>Tytuł
           <input onChange={(e) => setTitle(e.target.value)} type="text" value={title} />
@@ -60,6 +82,6 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
       </form>
     </Modal>
   );
-}
+};
 
 export default AddPhoto;
