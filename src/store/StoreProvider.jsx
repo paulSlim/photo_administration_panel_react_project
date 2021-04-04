@@ -28,7 +28,8 @@ const StoreProvider = ({ children }) => {
       user,
       setUser,
       photos,
-      setPhotos
+      setPhotos,
+      fetchPhotoData
     }}>
       {children}
     </StoreContext.Provider>

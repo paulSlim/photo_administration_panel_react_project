@@ -7,10 +7,10 @@ import { default as PhotoElmntStyle } from './PhotoElmnt.module.scss';
 
 const style = bemCssModules(PhotoElmntStyle);
 
-const PhotoElmnt = ({ id, index, authors, img, title }) => {
+const PhotoElmnt = ({ id, description, fileAddress, title, keywords, theme }) => {
   return (
     <div className={style()}>
-      <img alt={title} className={style("image")} src={img} />
+      <img alt={title} className={style("image")} src={fileAddress} />
       {/* <ul>
         <li className={style("info")}>id: {id}</li>
         <li className={style("info")}>autor: {authors[0]}</li>

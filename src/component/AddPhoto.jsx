@@ -11,8 +11,8 @@ import { default as AddPhotoStyle } from './AddPhoto.module.scss';
 const style = bemCssModules(AddPhotoStyle);
 
 const AddPhoto = ({ handleClose, isModalActive }) => {
-  const [selectedFile, setSelectedFile] = useState(undefined);
-  const [fileName, setFileName] = useState('');
+  const [selectedFile, setSelectedFile] = useState('');
+  const [fileAddress, setFileAddress] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [keywords, setKeywords] = useState('');
@@ -23,32 +23,45 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
   const handleFileInput = e => {
     const file = e.target.files[0];
     setSelectedFile(e.target.files[0]);
-    setFileName(file.name);
+    setFileAddress(`http://localhost:8000/${file.name}`);
+  }
+
+  const clearModalPhoto = () => {
+    setSelectedFile('');
+    setFileAddress('');
+    setTitle('');
+    setDescription('');
+    setKeywords('');
+    setTheme('');
   }
 
   const handleCloseModal = e => {
     e.preventDefault();
+    clearModalPhoto();
     handleClose();
+    
   }
 
   const handlePhotoSubmit = async e => {
     e.preventDefault();
-    // const test = {
-    //   fileName,
-    //   title,
-    //   description,
-    //   keywords,
-    //   theme
-    // };
-    // console.log(test);
+    const dataForm = new FormData();
+    dataForm.append('file', selectedFile);
+    console.log('dataForm file: ' + dataForm);
+    
+    await request.post(
+      '/upload', 
+      dataForm
+    ).then(res => {
+      console.log(res.statusText)
+    });
+
     const { data, status } = await request.post(
       '/photos',
-      { selectedFile, fileName, title, description, keywords, theme }
+      { fileAddress, title, description, keywords, theme }
     );
     if (status === 201) {
       fetchPhotoData();
-      clearModal();
-      handleClose();
+      clearModalPhoto();
     } else {
       setValidation(data.message);
     }
