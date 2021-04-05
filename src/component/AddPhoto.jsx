@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 
 import bemCssModules from 'bem-css-modules';
 import { StoreContext } from '../store/StoreProvider';
@@ -6,9 +6,9 @@ import { StoreContext } from '../store/StoreProvider';
 import request from '../helpers/request';
 
 import Modal from './Modal';
-import { default as AddPhotoStyle } from './AddPhoto.module.scss';
+import { default as LoginFormStyles } from './LoginForm.module.scss';
 
-const style = bemCssModules(AddPhotoStyle);
+const style = bemCssModules(LoginFormStyles);
 
 const AddPhoto = ({ handleClose, isModalActive }) => {
   const [selectedFile, setSelectedFile] = useState('');
@@ -18,15 +18,17 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
   const [keywords, setKeywords] = useState('');
   const [theme, setTheme] = useState('');
 
+  const fileInputRef = useRef();
+
   const { fetchPhotoData } = useContext(StoreContext);
 
   const handleFileInput = e => {
     const file = e.target.files[0];
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(file);
     setFileAddress(`http://localhost:8000/${file.name}`);
   }
 
-  const clearModalPhoto = () => {
+  const clearModalAddPhoto = () => {
     setSelectedFile('');
     setFileAddress('');
     setTitle('');
@@ -37,9 +39,7 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
 
   const handleCloseModal = e => {
     e.preventDefault();
-    clearModalPhoto();
     handleClose();
-    
   }
 
   const handlePhotoSubmit = async e => {
@@ -47,9 +47,9 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
     const dataForm = new FormData();
     dataForm.append('file', selectedFile);
     console.log('dataForm file: ' + dataForm);
-    
+
     await request.post(
-      '/upload', 
+      '/upload',
       dataForm
     ).then(res => {
       console.log(res.statusText)
@@ -61,34 +61,49 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
     );
     if (status === 201) {
       fetchPhotoData();
-      clearModalPhoto();
+      clearModalAddPhoto();
     } else {
       setValidation(data.message);
     }
   }
 
+  useEffect(() => {
+    if (isModalActive) {
+      clearModalAddPhoto();
+      fileInputRef.current.value = '';
+    }
+
+  }, [isModalActive]);
 
   return (
     <Modal outsideClick={true} isModalActive={isModalActive} handleClose={handleClose}>
       <form className={style()} method="post" encType="multipart/form-data" onSubmit={handlePhotoSubmit}>
-        <div>
+        <div className={style('login-input')}>
           <label>Załaduj zdjęcie
-          <input onChange={handleFileInput} type="file" defaultValue={selectedFile} />
+          <input onChange={handleFileInput} onClick={e => e.target.value = ''} ref={fileInputRef} type="file" defaultValue={selectedFile} />
           </label>
+        </div>
+        <div className={style('login-input')}>
           <label>Tytuł
           <input onChange={(e) => setTitle(e.target.value)} type="text" value={title} />
           </label>
+        </div>
+        <div className={style('login-input')}>
           <label>Opis
           <input onChange={(e) => setDescription(e.target.value)} type="text" value={description} />
           </label>
+        </div>
+        <div className={style('login-input')}>
           <label>Słowa kluczowe
           <input onChange={(e) => setKeywords(e.target.value)} type="text" value={keywords} />
           </label>
+        </div>
+        <div className={style('login-input')}>
           <label>Temat
           <input onChange={(e) => setTheme(e.target.value)} type="text" value={theme} />
           </label>
         </div>
-        <div>
+        <div className={style('login-input')}>
           <button type="submit">Dodaj zdjęcie</button>
           <button onClick={handleCloseModal}>Anuluj</button>
         </div>
