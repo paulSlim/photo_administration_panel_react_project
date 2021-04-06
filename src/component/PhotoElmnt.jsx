@@ -11,11 +11,14 @@ const PhotoElmnt = ({ id, description, fileAddress, title, keywords, theme }) =>
   return (
     <div className={style()}>
       <img alt={title} className={style("image")} src={fileAddress} />
-      {/* <ul>
-        <li className={style("info")}>id: {id}</li>
-        <li className={style("info")}>autor: {authors[0]}</li>
-        <li className={style('info')}>tytuł: {title}</li>
-      </ul> */}
+      <div className={style("photo-card-content")}>
+        <ul className={style("info")}>
+          <li className={style("info-title")}>{title}</li>
+          <li className={style("info-keywords")}>{keywords}</li>
+          <li className={style("info-theme")}>{theme}</li>
+          <li className={style("info-description")}>{description}</li>
+        </ul>
+      </div>
     </div>
   );
 }

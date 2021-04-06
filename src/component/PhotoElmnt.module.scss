@@ -1,9 +1,8 @@
 .photo-card {
   max-width: 23vw;
   height: 23vh;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   margin: 15px 0 0 15px;
   border-radius: 5%;
   cursor: pointer;
@@ -15,9 +14,36 @@
     border-radius: 5%;
   }
 
+  &:hover &__photo-card-content {
+    position: absolute;
+    object-fit: scale-down;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba($color: white, $alpha: 0.6);
+    border-radius: 5%;
+    transition: all .2s;
+  }
+
   &__info {
+    display: none;
+    width: 80%;
+  }
+  
+  &:hover &__info {
+    display: block;
+    padding: 15px;
     list-style-type: none;
-    font-size: 16px;
+  }
+
+  li {
+    margin-top: 15px;
+  }
+
+  &__info-title {
+    font-size: 30px;
+    font-weight: bold;
   }
 }
 
