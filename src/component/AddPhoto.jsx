@@ -25,7 +25,7 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
   const handleFileInput = e => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    setFileAddress(`http://localhost:8000/${file.name}`);
+    setFileAddress(file.name);
   }
 
   const clearModalAddPhoto = () => {

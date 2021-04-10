@@ -19,7 +19,7 @@ const PhotoElmnt = ({ id, description, fileAddress, title, keywords, theme }) =>
   return (
     <div className={style()}>
       {isMenuOpen && <ActionMenu id={id} description={description} fileAddress={fileAddress} title={title} keywords={keywords} theme={theme} handleIsMenuOpen={handleIsMenuOpen}/>}
-      <img alt={title} className={style("image")} src={fileAddress} />
+      <img alt={title} className={style("image")} src={`http://localhost:8000/${fileAddress}`} />
       <div className={style("photo-card-content")} onBlur={() => setIsMenuOpen(false)}>
         <div className={style("meatballs-menu")} onClick={handleIsMenuOpen}>
           <span>{isMenuOpen ? "x" : "..."}</span>

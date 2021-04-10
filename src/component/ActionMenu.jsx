@@ -1,19 +1,30 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
+
 
 import bemCssModules from 'bem-css-modules';
-// import { StoreContext } from '../store/StoreProvider';
+import request from '../helpers/request';
+import { StoreContext } from '../store/StoreProvider';
 
-// import { default as PhotoElmntStyle } from './PhotoElmnt.module.scss';
+
 import { default as ActionMenuStyle } from './ActionMenu.module.scss';
 
-// const style0 = bemCssModules(PhotoElmntStyle);
 const style = bemCssModules(ActionMenuStyle);
 
 const ActionMenu = ({ id, description, fileAddress, title, keywords, theme, handleIsMenuOpen }) => {
 
-    const handlePhotoDelete = () => {
-        console.log(id);
+  const { fetchPhotoData } = useContext(StoreContext);
+    
+  const handlePhotoDelete = async () => {
+      const { data, status } = await request.delete(
+        `/photos/${id}`,
+      );
+      if (status === 200) {
+        fetchPhotoData();
+      } else {
+        setValidation(data.message);
+      }
     }
+    
 
   return (
     <div className={style()}>
