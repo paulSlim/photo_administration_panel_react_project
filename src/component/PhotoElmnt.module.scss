@@ -26,6 +26,35 @@
     transition: all .2s;
   }
 
+  &__meatballs-menu {
+    display: none;
+    color: black;
+    background-color: white;
+    font-family: Helvetica;
+    z-index: 2;
+  }
+
+  &__meatballs-menu:active {
+    background-color: black;
+    color: white;
+  }
+
+  &__meatballs-menu:hover {
+    background-color: whitesmoke;
+  }
+
+  &:hover &__meatballs-menu {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 30px;
+    border-radius: 5%;
+    text-align: center;
+    font-size: 25px;  
+  }
+
   &__info {
     display: none;
     width: 80%;
@@ -33,6 +62,7 @@
   
   &:hover &__info {
     display: block;
+    margin-top: 15px;
     padding: 15px;
     list-style-type: none;
   }

@@ -1,0 +1,29 @@
+.menu-container {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  height: 23vh;
+  border-radius: 5%;
+  z-index: 1;
+
+  &__menu-fn-block {
+      margin: 50px 0 0 15px;
+  }
+
+  &__menu-fn {
+      max-width: 80%;
+      height: 20px;
+      font-size: 16px;
+      line-height: 18px;
+      list-style-type: none;
+      background-color: whitesmoke;
+  }
+
+  &__menu-fn:hover {
+      background-color: lightgrey;
+  }
+
+}
+
