@@ -10,7 +10,7 @@ import { default as LoginFormStyles } from './LoginForm.module.scss';
 
 const style = bemCssModules(LoginFormStyles);
 
-const AddPhoto = ({ handleClose, isModalActive }) => {
+const AddPhoto = () => {
   const [selectedFile, setSelectedFile] = useState('');
   const [fileAddress, setFileAddress] = useState('');
   const [title, setTitle] = useState('');
@@ -20,7 +20,7 @@ const AddPhoto = ({ handleClose, isModalActive }) => {
 
   const fileInputRef = useRef();
 
-  const { fetchPhotoData } = useContext(StoreContext);
+  const { fetchPhotoData, handleClose, isModalActive } = useContext(StoreContext);
 
   const handleFileInput = e => {
     const file = e.target.files[0];

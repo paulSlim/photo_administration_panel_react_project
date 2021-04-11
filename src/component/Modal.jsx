@@ -15,8 +15,6 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
 
     const { current: modal } = modalRef;
 
-    console.log(modal);
-
     if (isModalActive) {
       prevElement.current = document.activeElement;
       modal.showModal();
