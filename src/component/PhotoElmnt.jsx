@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import ActionMenu from './ActionMenu';
 
 import bemCssModules from 'bem-css-modules';
-// import { StoreContext } from '../store/StoreProvider';
+import { StoreContext } from '../store/StoreProvider';
 import { default as PhotoElmntStyle } from './PhotoElmnt.module.scss';
 
 const style = bemCssModules(PhotoElmntStyle);
@@ -12,10 +12,25 @@ const PhotoElmnt = ({ id, description, fileAddress, title, keywords, theme }) =>
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const { handleOnClickLogin, setCurrentPhoto } = useContext(StoreContext);
+
+
   const handleIsMenuOpen = () => {
     setIsMenuOpen(prevValue => !prevValue);
   }  
-  
+
+  const handleDisplayPhoto = () => {
+    setCurrentPhoto({
+      id,
+      description,
+      fileAddress,
+      title,
+      keywords,
+      theme
+    });
+    handleOnClickLogin("isDisplayPhotoActive");
+  }
+
   return (
     <div className={style()}>
       {isMenuOpen && <ActionMenu 
@@ -25,13 +40,13 @@ const PhotoElmnt = ({ id, description, fileAddress, title, keywords, theme }) =>
         title={title} 
         keywords={keywords} 
         theme={theme} 
-        handleIsMenuOpen={handleIsMenuOpen}/>
-      }
+        handleIsMenuOpen={handleIsMenuOpen}
+        />}
       <img alt={title} className={style("image")} src={`http://localhost:8000/${fileAddress}`} />
-      <div className={style("photo-card-content")}>
-        <div className={style("meatballs-menu")} onClick={handleIsMenuOpen}>
+      <div className={style("meatballs-menu")} onClick={handleIsMenuOpen}>
           <span>{isMenuOpen ? "x" : "..."}</span>
-        </div>
+      </div>
+      <div className={style("photo-card-content")} onClick={handleDisplayPhoto}>
         <ul className={style("info")}>
           <li className={style("info-title")}>{title}</li>
           <li className={style("info-keywords")}>{keywords}</li>

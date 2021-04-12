@@ -7,9 +7,11 @@ const StoreProvider = ({ children }) => {
   const [photos, setPhotos] = useState([]);
 
   const [isModalActive, setIsModalActive] = useState(false);
+  const [currentPhoto, setCurrentPhoto] = useState(null);
   const [modalContent, setModalContent] = useState({
     isLoginFormActive: false,
     isAddPhotoActive: false,
+    isDisplayPhotoActive: false
   });
 
   const fetchPhotoData = async () => {
@@ -19,7 +21,7 @@ const StoreProvider = ({ children }) => {
   };
 
   const handleClose = () => setIsModalActive(false);
-
+  
   const handleOnClickLogin = (property) => {
     if (user) {
       setUser(null);
@@ -30,6 +32,7 @@ const StoreProvider = ({ children }) => {
     let switchModalTemp = {
       isLoginFormActive: false,
       isAddPhotoActive: false,
+      isDisplayPhotoActive: false,
     };
     switchModalTemp.[property] = true;
     setModalContent(switchModalTemp);
@@ -47,17 +50,19 @@ const StoreProvider = ({ children }) => {
 
   return (
     <StoreContext.Provider value={{
-      user,
-      setUser,
-      photos,
-      setPhotos,
+      currentPhoto,
       fetchPhotoData,
       isModalActive,
-      setIsModalActive,
-      modalContent,
-      setModalContent,
       handleClose,
-      handleOnClickLogin
+      handleOnClickLogin,
+      modalContent,
+      photos,
+      setCurrentPhoto,
+      setIsModalActive,
+      setModalContent,
+      setPhotos,
+      setUser,
+      user,
     }}>
       {children}
     </StoreContext.Provider>

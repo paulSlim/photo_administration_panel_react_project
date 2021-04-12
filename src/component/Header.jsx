@@ -5,6 +5,7 @@ import { default as HeaderStyles } from './Header.module.scss';
 import { StoreContext } from '../store/StoreProvider';
 
 import AddPhoto from './AddPhoto';
+import DisplayPhoto from './DisplayPhoto';
 import LoginForm from './LoginForm';
 
 const style = bemCssModules(HeaderStyles);
@@ -24,7 +25,7 @@ const Header = () => {
       </div>
       {modalContent.isAddPhotoActive && <AddPhoto />}
       {modalContent.isLoginFormActive && <LoginForm />}
-      {/* {modalContent.isAddPhotoActive && <DisplayPhoto />} */}
+      {modalContent.isDisplayPhotoActive && <DisplayPhoto />}
     </header>
   );
 };

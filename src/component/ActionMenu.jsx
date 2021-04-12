@@ -12,7 +12,7 @@ const style = bemCssModules(ActionMenuStyle);
 
 const ActionMenu = ({ id, description, fileAddress, title, keywords, theme, handleIsMenuOpen }) => {
 
-  const { fetchPhotoData, handleOnClickLogin } = useContext(StoreContext);
+  const { fetchPhotoData, handleOnClickLogin, setCurrentPhoto } = useContext(StoreContext);
   
   const handlePhotoDelete = async () => {
       const { data, status } = await request.delete(
@@ -29,7 +29,7 @@ const ActionMenu = ({ id, description, fileAddress, title, keywords, theme, hand
   return (
     <div className={style()}>
         <ul className={style("menu-fn-block")}>
-            <li className={style("menu-fn")}> Edytuj</li>
+            <li className={style("menu-fn")} >Edytuj</li>
             <li className={style("menu-fn")} onClick={handlePhotoDelete}> Usuń</li>
             <li className={style("menu-fn")}> W lewo</li>
             <li className={style("menu-fn")}> W prawo</li>
