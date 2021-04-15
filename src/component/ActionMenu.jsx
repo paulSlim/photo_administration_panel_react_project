@@ -31,8 +31,8 @@ const ActionMenu = ({ id, description, fileAddress, title, keywords, theme, hand
         <ul className={style("menu-fn-block")}>
             <li className={style("menu-fn")} >Edytuj</li>
             <li className={style("menu-fn")} onClick={handlePhotoDelete}> Usuń</li>
-            <li className={style("menu-fn")}> W lewo</li>
-            <li className={style("menu-fn")}> W prawo</li>
+            <li className={style("menu-fn")}> Przesuń w lewo</li>
+            <li className={style("menu-fn")}> Przesuń w prawo</li>
         </ul>
     </div>
   );

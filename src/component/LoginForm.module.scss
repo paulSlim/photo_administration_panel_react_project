@@ -1,6 +1,9 @@
 .login-form {
   display: flex;
+  background-color: white;
   flex-direction: column;
+  border-radius: 2%;
+  padding: 20px;
 
   &__validation {
     color: red
