@@ -5,6 +5,7 @@ import request from '../helpers/request';
 const StoreProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [photos, setPhotos] = useState([]);
+  const [themes, setThemes] = useState([]);
 
   const [editMode, setEditMode] = useState(false);
   const [currentPhoto, setCurrentPhoto] = useState(null);
@@ -20,6 +21,11 @@ const StoreProvider = ({ children }) => {
     const { data } = await request.get('/photos');
     setPhotos(data.photos);
   };
+
+  const fetchThemesData = async () => {
+    const { data } = await request.get('/themes');
+    setThemes(data.themes);
+  }
 
   const handleClose = () => setIsModalActive(false);
   
@@ -54,6 +60,7 @@ const StoreProvider = ({ children }) => {
     // if (user) {
     //   if (user.accessLevel === 1) {
     fetchPhotoData();
+    fetchThemesData();
     //   }
     // } else return;
   }, []);
