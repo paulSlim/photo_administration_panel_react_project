@@ -6,17 +6,18 @@ const StoreProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [photos, setPhotos] = useState([]);
 
-  const [isModalActive, setIsModalActive] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [currentPhoto, setCurrentPhoto] = useState(null);
+  const [isModalActive, setIsModalActive] = useState(false);
   const [modalContent, setModalContent] = useState({
-    isLoginFormActive: false,
     isAddPhotoActive: false,
-    isDisplayPhotoActive: false
+    isEditPhotoActive: false,
+    isDisplayPhotoActive: false,
+    isLoginFormActive: false,
   });
 
   const fetchPhotoData = async () => {
     const { data } = await request.get('/photos');
-
     setPhotos(data.photos);
   };
 
@@ -30,12 +31,23 @@ const StoreProvider = ({ children }) => {
     }
 
     let switchModalTemp = {
-      isLoginFormActive: false,
       isAddPhotoActive: false,
       isDisplayPhotoActive: false,
+      isLoginFormActive: false,
     };
     switchModalTemp.[property] = true;
     setModalContent(switchModalTemp);
+  }
+
+  const photoDelete = async (id) => {
+    const { data, status } = await request.delete(
+      `/photos/${id}`,
+    );
+    if (status === 200) {
+      fetchPhotoData();
+    } else {
+      setValidation(data.message);
+    }
   }
 
   useEffect(() => {
@@ -51,13 +63,16 @@ const StoreProvider = ({ children }) => {
   return (
     <StoreContext.Provider value={{
       currentPhoto,
+      editMode,
       fetchPhotoData,
       isModalActive,
       handleClose,
       handleOnClickLogin,
+      photoDelete,
       modalContent,
       photos,
       setCurrentPhoto,
+      setEditMode,
       setIsModalActive,
       setModalContent,
       setPhotos,

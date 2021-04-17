@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import bemCssModules from 'bem-css-modules';
 
 import { default as Styles } from './Modal.module.scss';
+import { StoreContext } from '../store/StoreProvider';
 
 const style = bemCssModules(Styles);
 
 const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
   const modalRef = useRef(null);
   const prevElement = useRef(null);
+
+  const { setEditMode } = useContext(StoreContext);
 
   useEffect(() => {
     if (!modalRef.current) return;
@@ -34,10 +37,11 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
 
     modal.addEventListener('cancel', handleCancel);
 
+    
     return () => {
+      // setEditMode(false);
       modal.removeEventListener('cancel', handleCancel);
     }
-
   }, [handleClose])
 
   const handleOutsideClick = ({ target }) => {
@@ -45,6 +49,7 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
 
     if (outsideClick && target === current) {
       handleClose();
+      // setEditMode(false);
     }
   }
 

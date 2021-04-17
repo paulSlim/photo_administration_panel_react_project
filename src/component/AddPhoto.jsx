@@ -11,6 +11,7 @@ import { default as LoginFormStyles } from './LoginForm.module.scss';
 const style = bemCssModules(LoginFormStyles);
 
 const AddPhoto = () => {
+  const [id, setId] = useState('');
   const [selectedFile, setSelectedFile] = useState('');
   const [fileAddress, setFileAddress] = useState('');
   const [title, setTitle] = useState('');
@@ -20,7 +21,14 @@ const AddPhoto = () => {
 
   const fileInputRef = useRef();
 
-  const { fetchPhotoData, handleClose, isModalActive } = useContext(StoreContext);
+  const {
+    currentPhoto,
+    editMode,
+    fetchPhotoData, 
+    handleClose, 
+    isModalActive,
+    setEditMode,
+  } = useContext(StoreContext);
 
   const handleFileInput = e => {
     const file = e.target.files[0];
@@ -67,22 +75,53 @@ const AddPhoto = () => {
     }
   }
 
+  const handlePhotoEdit = async e => {
+    e.preventDefault();
+    const { data, status } = await request.put(
+      '/photos',
+      { id, fileAddress, title, description, keywords, theme }
+    );
+    if (status === 202) {
+      fetchPhotoData();
+      clearModalAddPhoto();
+      handleClose();
+    } else {
+      setValidation(data.message);
+    }
+  };
+
   useEffect(() => {
     if (isModalActive) {
+      
+      if (!editMode) {
       clearModalAddPhoto();
       fileInputRef.current.value = '';
+      }
+
+      if (editMode) {
+        setId(currentPhoto.id);
+        setFileAddress(currentPhoto.fileAddress);
+        setTitle(currentPhoto.title);
+        setDescription(currentPhoto.description);
+        setKeywords(currentPhoto.keywords);
+        setTheme(currentPhoto.theme);
+      }
     }
 
   }, [isModalActive]);
 
   return (
     <Modal outsideClick={true} isModalActive={isModalActive} handleClose={handleClose}>
-      <form className={style()} method="post" encType="multipart/form-data" onSubmit={handlePhotoSubmit}>
-        <div className={style('login-input')}>
+      <form className={style()} method={ editMode ? "put" : "post" }  encType="multipart/form-data" onSubmit={ editMode 
+      ? handlePhotoEdit 
+      : handlePhotoSubmit}>
+        { editMode
+        ? null 
+        : <div className={style('login-input')}>
           <label>Załaduj zdjęcie
           <input onChange={handleFileInput} onClick={e => e.target.value = ''} ref={fileInputRef} type="file" defaultValue={selectedFile} />
           </label>
-        </div>
+        </div>}
         <div className={style('login-input')}>
           <label>Tytuł
           <input onChange={(e) => setTitle(e.target.value)} type="text" value={title} />
@@ -104,7 +143,7 @@ const AddPhoto = () => {
           </label>
         </div>
         <div className={style('login-input')}>
-          <button type="submit">Dodaj zdjęcie</button>
+          <button type="submit">{ editMode ? 'Edytuj zdjęcie' : 'Dodaj zdjęcie'}</button>
           <button onClick={handleCloseModal}>Anuluj</button>
         </div>
       </form>
