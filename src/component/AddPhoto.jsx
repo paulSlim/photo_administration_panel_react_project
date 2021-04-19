@@ -1,86 +1,90 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef } from "react";
 
-import bemCssModules from 'bem-css-modules';
-import { StoreContext } from '../store/StoreProvider';
+import bemCssModules from "bem-css-modules";
+import { StoreContext } from "../store/StoreProvider";
 
-import request from '../helpers/request';
+import request from "../helpers/request";
 
-import Modal from './Modal';
-import { default as LoginFormStyles } from './LoginForm.module.scss';
+import Modal from "./Modal";
+import { default as LoginFormStyles } from "./LoginForm.module.scss";
 
 const style = bemCssModules(LoginFormStyles);
 
 const AddPhoto = () => {
-  const [id, setId] = useState('');
-  const [selectedFile, setSelectedFile] = useState('');
-  const [fileAddress, setFileAddress] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [keywords, setKeywords] = useState('');
-  const [theme, setTheme] = useState('');
+  const [id, setId] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+  const [fileAddress, setFileAddress] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [keywords, setKeywords] = useState("");
+  const [theme, setTheme] = useState("");
 
   const fileInputRef = useRef();
 
   const {
     currentPhoto,
     editMode,
-    fetchPhotoData, 
-    handleClose, 
+    fetchPhotoData,
+    handleClose,
     isModalActive,
     setEditMode,
   } = useContext(StoreContext);
 
-  const handleFileInput = e => {
+  const handleFileInput = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
     setFileAddress(file.name);
-  }
+  };
 
   const clearModalAddPhoto = () => {
-    setSelectedFile('');
-    setFileAddress('');
-    setTitle('');
-    setDescription('');
-    setKeywords('');
-    setTheme('');
-  }
+    setSelectedFile("");
+    setFileAddress("");
+    setTitle("");
+    setDescription("");
+    setKeywords("");
+    setTheme("");
+  };
 
-  const handleCloseModal = e => {
+  const handleCloseModal = (e) => {
     e.preventDefault();
     handleClose();
-  }
+  };
 
-  const handlePhotoSubmit = async e => {
+  const handlePhotoSubmit = async (e) => {
     e.preventDefault();
     const dataForm = new FormData();
-    dataForm.append('file', selectedFile);
-    console.log('dataForm file: ' + dataForm);
+    dataForm.append("file", selectedFile);
+    console.log("dataForm file: " + dataForm);
 
-    await request.post(
-      '/upload',
-      dataForm
-    ).then(res => {
-      console.log(res.statusText)
+    await request.post("/upload", dataForm).then((res) => {
+      console.log(res.statusText);
     });
 
-    const { data, status } = await request.post(
-      '/photos',
-      { fileAddress, title, description, keywords, theme }
-    );
+    const { data, status } = await request.post("/photos", {
+      fileAddress,
+      title,
+      description,
+      keywords,
+      theme,
+    });
     if (status === 201) {
       fetchPhotoData();
       clearModalAddPhoto();
     } else {
       setValidation(data.message);
     }
-  }
+  };
 
-  const handlePhotoEdit = async e => {
+  const handlePhotoEdit = async (e) => {
     e.preventDefault();
-    const { data, status } = await request.put(
-      '/photos',
-      { id, fileAddress, title, description, keywords, theme }
-    );
+    const { data, status } = await request.put("/photos", {
+      id,
+      fileAddress,
+      title,
+      description,
+      keywords,
+      theme,
+    });
     if (status === 202) {
       fetchPhotoData();
       clearModalAddPhoto();
@@ -92,10 +96,9 @@ const AddPhoto = () => {
 
   useEffect(() => {
     if (isModalActive) {
-      
       if (!editMode) {
-      clearModalAddPhoto();
-      fileInputRef.current.value = '';
+        clearModalAddPhoto();
+        fileInputRef.current.value = "";
       }
 
       if (editMode) {
@@ -107,43 +110,78 @@ const AddPhoto = () => {
         setTheme(currentPhoto.theme);
       }
     }
-
   }, [isModalActive]);
 
   return (
-    <Modal outsideClick={true} isModalActive={isModalActive} handleClose={handleClose}>
-      <form className={style()} method={ editMode ? "put" : "post" }  encType="multipart/form-data" onSubmit={ editMode 
-      ? handlePhotoEdit 
-      : handlePhotoSubmit}>
-        { editMode
-        ? null 
-        : <div className={style('login-input')}>
-          <label>Załaduj zdjęcie
-          <input onChange={handleFileInput} onClick={e => e.target.value = ''} ref={fileInputRef} type="file" defaultValue={selectedFile} />
-          </label>
-        </div>}
-        <div className={style('login-input')}>
-          <label>Tytuł
-          <input onChange={(e) => setTitle(e.target.value)} type="text" value={title} />
+    <Modal
+      outsideClick={true}
+      isModalActive={isModalActive}
+      handleClose={handleClose}
+    >
+      <form
+        className={style()}
+        method={editMode ? "put" : "post"}
+        encType="multipart/form-data"
+        onSubmit={editMode ? handlePhotoEdit : handlePhotoSubmit}
+      >
+        {editMode ? null : (
+          <div className={style("login-input")}>
+            <label>
+              Załaduj zdjęcie
+              <input
+                onChange={handleFileInput}
+                onClick={(e) => (e.target.value = "")}
+                ref={fileInputRef}
+                type="file"
+                defaultValue={selectedFile}
+              />
+            </label>
+          </div>
+        )}
+        <div className={style("login-input")}>
+          <label>
+            Tytuł
+            <input
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              value={title}
+            />
           </label>
         </div>
-        <div className={style('login-input')}>
-          <label>Opis
-          <input onChange={(e) => setDescription(e.target.value)} type="text" value={description} />
+        <div className={style("login-input")}>
+          <label>
+            Opis
+            <input
+              onChange={(e) => setDescription(e.target.value)}
+              type="text"
+              value={description}
+            />
           </label>
         </div>
-        <div className={style('login-input')}>
-          <label>Słowa kluczowe
-          <input onChange={(e) => setKeywords(e.target.value)} type="text" value={keywords} />
+        <div className={style("login-input")}>
+          <label>
+            Słowa kluczowe
+            <input
+              onChange={(e) => setKeywords(e.target.value)}
+              type="text"
+              value={keywords}
+            />
           </label>
         </div>
-        <div className={style('login-input')}>
-          <label>Temat
-          <input onChange={(e) => setTheme(e.target.value)} type="text" value={theme} />
+        <div className={style("login-input")}>
+          <label>
+            Temat
+            <input
+              onChange={(e) => setTheme(e.target.value)}
+              type="text"
+              value={theme}
+            />
           </label>
         </div>
-        <div className={style('login-input')}>
-          <button type="submit">{ editMode ? 'Edytuj zdjęcie' : 'Dodaj zdjęcie'}</button>
+        <div className={style("login-input")}>
+          <button type="submit">
+            {editMode ? "Edytuj zdjęcie" : "Dodaj zdjęcie"}
+          </button>
           <button onClick={handleCloseModal}>Anuluj</button>
         </div>
       </form>

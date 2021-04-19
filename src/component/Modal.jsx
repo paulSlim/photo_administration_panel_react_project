@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
-import bemCssModules from 'bem-css-modules';
+import React, { useContext, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
+import bemCssModules from "bem-css-modules";
 
-import { default as Styles } from './Modal.module.scss';
-import { StoreContext } from '../store/StoreProvider';
+import { default as Styles } from "./Modal.module.scss";
+import { StoreContext } from "../store/StoreProvider";
 
 const style = bemCssModules(Styles);
 
@@ -30,19 +30,18 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
   useEffect(() => {
     const { current: modal } = modalRef;
 
-    const handleCancel = e => {
+    const handleCancel = (e) => {
       e.preventDefault();
       handleClose();
     };
 
-    modal.addEventListener('cancel', handleCancel);
+    modal.addEventListener("cancel", handleCancel);
 
-    
     return () => {
       // setEditMode(false);
-      modal.removeEventListener('cancel', handleCancel);
-    }
-  }, [handleClose])
+      modal.removeEventListener("cancel", handleCancel);
+    };
+  }, [handleClose]);
 
   const handleOutsideClick = ({ target }) => {
     const { current } = modalRef;
@@ -51,13 +50,14 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
       handleClose();
       // setEditMode(false);
     }
-  }
+  };
 
-  return ReactDOM.createPortal((
+  return ReactDOM.createPortal(
     <dialog className={style()} ref={modalRef} onClick={handleOutsideClick}>
       {children}
-    </dialog>
-  ), document.body)
+    </dialog>,
+    document.body
+  );
 };
 
 export default Modal;
