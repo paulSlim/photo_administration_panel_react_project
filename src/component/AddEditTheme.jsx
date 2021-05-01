@@ -2,10 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 
 import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
-
 import request from "../helpers/request";
 
 import Modal from "./Modal";
+import ThemeElement from "./ThemeElement";
+
 import { default as LoginFormStyles } from "./LoginForm.module.scss";
 
 const style = bemCssModules(LoginFormStyles);
@@ -13,14 +14,9 @@ const style = bemCssModules(LoginFormStyles);
 const AddEditTheme = () => {
   const [themeName, setThemeName] = useState("");
 
-  const {
-    editMode,
-    fetchThemesData,
-    handleClose,
-    isModalActive,
-    setThemes,
-    themes,
-  } = useContext(StoreContext);
+  const { fetchThemesData, handleClose, isModalActive, themes } = useContext(
+    StoreContext
+  );
 
   const handleAddTheme = async (e) => {
     e.preventDefault();
@@ -38,10 +34,20 @@ const AddEditTheme = () => {
   };
 
   const themesList = themes.map((theme) => (
-    <li className={style("theme-element")}>
-      {theme.themeName} <button>Usuń</button>
-    </li>
+    <ThemeElement
+      className={style("theme-element")}
+      key={theme.id}
+      id={theme.id}
+      themeName={theme.themeName}
+      fetchThemesData={fetchThemesData}
+    />
   ));
+
+  useEffect(() => {
+    if (isModalActive) {
+      setThemeName("");
+    }
+  }, [isModalActive]);
 
   return (
     <Modal
@@ -64,7 +70,9 @@ const AddEditTheme = () => {
             </label>
           </div>
           <div className={style("login-input")}>
-            <button type="submit">Dodaj temat</button>
+            <button type="submit" disabled={!themeName}>
+              Dodaj temat
+            </button>
             <button onClick={handleCloseModal}>Anuluj</button>
           </div>
         </form>
