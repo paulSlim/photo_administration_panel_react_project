@@ -4,12 +4,14 @@ import request from "../helpers/request";
 
 const ThemeElement = ({
   id,
-  themeName,
-  handleUpdateThemes,
+  fetchPhotoData,
   fetchThemesData,
+  handleUpdateThemes,
+  themeName,
 }) => {
   const [editThemeMode, setEditThemeMode] = useState(false);
 
+  const oldThemeName = themeName;
   const themeRef = useRef("");
 
   const handleThemeEdit = () => {
@@ -18,10 +20,16 @@ const ThemeElement = ({
 
   const handleUpdateTheme = async () => {
     const themeName = themeRef.current.value;
-    console.log(themeName);
-    const { data, status } = await request.put("/themes", { id, themeName });
+    console.log("old name:" + oldThemeName);
+    console.log("new name:" + themeName);
+    const { data, status } = await request.put("/themes", {
+      id,
+      oldThemeName,
+      themeName,
+    });
     if (status === 202) {
       fetchThemesData();
+      fetchPhotoData();
       setEditThemeMode(false);
     } else setValidation(data.message);
   };

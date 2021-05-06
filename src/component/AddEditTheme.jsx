@@ -14,9 +14,13 @@ const style = bemCssModules(LoginFormStyles);
 const AddEditTheme = () => {
   const [themeName, setThemeName] = useState("");
 
-  const { fetchThemesData, handleClose, isModalActive, themes } = useContext(
-    StoreContext
-  );
+  const {
+    fetchPhotoData,
+    fetchThemesData,
+    handleClose,
+    isModalActive,
+    themes,
+  } = useContext(StoreContext);
 
   const handleAddTheme = async (e) => {
     e.preventDefault();
@@ -39,6 +43,7 @@ const AddEditTheme = () => {
       key={theme.id}
       id={theme.id}
       themeName={theme.themeName}
+      fetchPhotoData={fetchPhotoData}
       fetchThemesData={fetchThemesData}
     />
   ));
