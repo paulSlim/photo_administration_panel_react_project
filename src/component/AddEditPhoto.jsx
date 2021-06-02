@@ -10,14 +10,14 @@ import { default as LoginFormStyles } from "./LoginForm.module.scss";
 
 const style = bemCssModules(LoginFormStyles);
 
-const AddPhoto = () => {
-  const [id, setId] = useState("");
+const AddEditPhoto = () => {
   const [selectedFile, setSelectedFile] = useState("");
-  const [fileAddress, setFileAddress] = useState("");
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [fileAddress, setFileAddress] = useState("");
+  const [id, setId] = useState("");
   const [keywords, setKeywords] = useState("");
   const [theme, setTheme] = useState("");
+  const [title, setTitle] = useState("");
 
   const fileInputRef = useRef();
 
@@ -27,27 +27,26 @@ const AddPhoto = () => {
     fetchPhotoData,
     handleClose,
     isModalActive,
-    setEditMode,
   } = useContext(StoreContext);
-
-  const handleFileInput = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    setFileAddress(file.name);
-  };
 
   const clearModalAddPhoto = () => {
     setSelectedFile("");
-    setFileAddress("");
-    setTitle("");
     setDescription("");
+    setFileAddress("");
     setKeywords("");
     setTheme("");
+    setTitle("");
   };
 
   const handleCloseModal = (e) => {
     e.preventDefault();
     handleClose();
+  };
+
+  const handleFileInput = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setFileAddress(file.name);
   };
 
   const handlePhotoSubmit = async (e) => {
@@ -189,4 +188,4 @@ const AddPhoto = () => {
   );
 };
 
-export default AddPhoto;
+export default AddEditPhoto;

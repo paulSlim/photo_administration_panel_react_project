@@ -2,13 +2,7 @@ import React, { useState, useRef } from "react";
 import bemCssModules from "bem-css-modules";
 import request from "../helpers/request";
 
-const ThemeElement = ({
-  id,
-  fetchPhotoData,
-  fetchThemesData,
-  handleUpdateThemes,
-  themeName,
-}) => {
+const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
   const [editThemeMode, setEditThemeMode] = useState(false);
 
   const oldThemeName = themeName;
@@ -34,17 +28,17 @@ const ThemeElement = ({
     } else setValidation(data.message);
   };
 
+  const defaultView = (
+    <li onDoubleClick={handleThemeEdit}>
+      {themeName} <button>Usuń</button>
+    </li>
+  );
+
   const editView = (
     <li>
       <input type="text" defaultValue={themeName} ref={themeRef} />
       <button onClick={handleUpdateTheme}>OK</button>
       <button onClick={handleThemeEdit}>X</button>
-    </li>
-  );
-
-  const defaultView = (
-    <li onDoubleClick={handleThemeEdit}>
-      {themeName} <button>Usuń</button>
     </li>
   );
 

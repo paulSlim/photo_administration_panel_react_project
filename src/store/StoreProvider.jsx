@@ -11,7 +11,7 @@ const StoreProvider = ({ children }) => {
   const [currentPhoto, setCurrentPhoto] = useState(null);
   const [isModalActive, setIsModalActive] = useState(false);
   const [modalContent, setModalContent] = useState({
-    isAddPhotoActive: false,
+    isAddEditPhotoActive: false,
     isAddEditThemeActive: false,
     isEditPhotoActive: false,
     isDisplayPhotoActive: false,
@@ -30,15 +30,15 @@ const StoreProvider = ({ children }) => {
 
   const handleClose = () => setIsModalActive(false);
 
-  const handleOnClickLogin = (property) => {
-    if (user) {
-      setUser(null);
-    } else {
-      setIsModalActive(true);
-    }
+  const handleModalContent = (property) => {
+    // if (user) {
+    //   setUser(null);
+    // } else {
+    //   setIsModalActive(true);
+    // }
 
     let switchModalTemp = {
-      isAddPhotoActive: false,
+      isAddEditPhotoActive: false,
       isAddEditThemeActive: false,
       isDisplayPhotoActive: false,
       isLoginFormActive: false,
@@ -73,7 +73,7 @@ const StoreProvider = ({ children }) => {
         fetchPhotoData,
         fetchThemesData,
         handleClose,
-        handleOnClickLogin,
+        handleModalContent,
         isModalActive,
         modalContent,
         photoDelete,

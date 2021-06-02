@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import bemCssModules from "bem-css-modules";
 
@@ -9,6 +9,14 @@ const style = bemCssModules(Styles);
 const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
   const modalRef = useRef(null);
   const prevElement = useRef(null);
+
+  const handleOutsideClick = ({ target }) => {
+    const { current } = modalRef;
+
+    if (outsideClick && target === current) {
+      handleClose();
+    }
+  };
 
   useEffect(() => {
     if (!modalRef.current) return;
@@ -38,14 +46,6 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
       modal.removeEventListener("cancel", handleCancel);
     };
   }, [handleClose]);
-
-  const handleOutsideClick = ({ target }) => {
-    const { current } = modalRef;
-
-    if (outsideClick && target === current) {
-      handleClose();
-    }
-  };
 
   return ReactDOM.createPortal(
     <dialog className={style()} ref={modalRef} onClick={handleOutsideClick}>
