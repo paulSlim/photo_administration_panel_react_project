@@ -12,6 +12,15 @@ const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
   const oldThemeName = themeName;
   const themeRef = useRef("");
 
+  const handleDeleteTheme = async () => {
+    console.log("id", id);
+    const { data, status } = await request.delete(`/themes/${id}`);
+    if (status === 200) {
+      fetchThemesData();
+      fetchPhotoData();
+    } else setValidation(data.message);
+  };
+
   const handleThemeEdit = () => {
     setEditThemeMode((prevValue) => !prevValue);
   };
@@ -34,7 +43,7 @@ const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
 
   const defaultView = (
     <li className={style()} onDoubleClick={handleThemeEdit}>
-      {themeName} <button>Usuń</button>
+      {themeName} <button onClick={handleDeleteTheme}>Usuń</button>
     </li>
   );
 
