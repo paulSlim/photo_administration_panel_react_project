@@ -1,17 +1,57 @@
+ul {
+  list-style-type: none;
+}
+
 .login-form {
   display: flex;
+  width: 350px;
   background-color: white;
   flex-direction: column;
   border-radius: 2%;
   padding: 20px;
 
   &__validation {
-    color: red
+    color: red;
   }
 
   &__login-input {
     margin-top: 15px;
     display: flex;
-    justify-content: space-around;
+
+    button {
+      background-color: #44c767;
+      margin-right: 10px;
+      border-radius: 4px;
+      border: 1px solid #18ab29;
+      display: inline-block;
+      cursor: pointer;
+      color: #ffffff;
+      font-family: Arial;
+      font-size: 14px;
+      padding: 5px 7px;
+      text-decoration: none;
+      text-shadow: 0px 1px 0px #2f6627;
+    }
+    button:hover {
+      background-color: #5cbf2a;
+    }
+    button:active {
+      position: relative;
+      top: 1px;
+    }
+
+    input {
+      width: 300px;
+      padding: 5px;
+      border-top: transparent;
+      border-left: transparent;
+      border-right: transparent;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-bottom: 2px solid green;
+    }
   }
 }

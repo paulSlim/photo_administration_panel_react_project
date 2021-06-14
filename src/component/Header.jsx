@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     <header className={style()}>
-      <h1 className={style("title")}>Panel administracyjny</h1>
+      <h1 className={style("title")}>Panel Administracyjny</h1>
       <div className={style("btn-container")}>
         <button onClick={handleAddEditPhoto} className={style("fn-btn")}>
           Dodaj zdjęcie

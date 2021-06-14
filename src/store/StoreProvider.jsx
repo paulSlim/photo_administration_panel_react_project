@@ -31,11 +31,11 @@ const StoreProvider = ({ children }) => {
   const handleClose = () => setIsModalActive(false);
 
   const handleModalContent = (property) => {
-    // if (user) {
-    //   setUser(null);
-    // } else {
-    //   setIsModalActive(true);
-    // }
+    if (user) {
+      setUser(null);
+    } else {
+      setIsModalActive(true);
+    }
 
     let switchModalTemp = {
       isAddEditPhotoActive: false,

@@ -61,14 +61,16 @@ const AddEditTheme = () => {
       handleClose={handleClose}
     >
       <div className={style()}>
-        <h4>Lista tematów</h4>
+        <h3>Lista tematów</h3>
         <ul>{themesList}</ul>
-        <h4>Dodaj temat</h4>
+        <br />
+        <h3>Dodaj temat</h3>
         <form method="post" onSubmit={handleAddTheme}>
           <div className={style("login-input")}>
             <label>
               Nazwa tematu
               <input
+                type="text"
                 onChange={(e) => setThemeName(e.target.value)}
                 value={themeName}
               />

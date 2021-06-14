@@ -126,6 +126,7 @@ const AddEditPhoto = () => {
         {editMode ? null : (
           <div className={style("login-input")}>
             <label>
+              <br />
               Załaduj zdjęcie
               <input
                 onChange={handleFileInput}

@@ -23,7 +23,7 @@
     width: 100%;
     background: rgba($color: white, $alpha: 0.6);
     border-radius: 5%;
-    transition: all .2s;
+    transition: all 0.2s;
   }
 
   &__meatballs-menu {
@@ -52,14 +52,14 @@
     height: 30px;
     border-radius: 5%;
     text-align: center;
-    font-size: 25px;  
+    font-size: 25px;
   }
 
   &__info {
     display: none;
     width: 80%;
   }
-  
+
   &:hover &__info {
     display: block;
     margin-top: 15px;
@@ -68,7 +68,7 @@
   }
 
   li {
-    margin-top: 15px;
+    margin-top: 8px;
   }
 
   &__info-title {
@@ -76,4 +76,3 @@
     font-weight: bold;
   }
 }
-

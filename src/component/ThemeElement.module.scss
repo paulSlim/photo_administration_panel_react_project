@@ -1,0 +1,26 @@
+li {
+  padding: 5px 0;
+
+  button {
+    background: none;
+    border: 1px solid black;
+    border-radius: 2%;
+    outline: none;
+    padding: 2px;
+    margin-left: 5px;
+  }
+
+  input {
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    border-bottom: transparent;
+    border-bottom: 1px solid green;
+    font-size: 14px;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-bottom: 1px solid green;
+  }
+}

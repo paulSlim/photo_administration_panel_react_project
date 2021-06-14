@@ -2,6 +2,10 @@ import React, { useState, useRef } from "react";
 import bemCssModules from "bem-css-modules";
 import request from "../helpers/request";
 
+import { default as ThemeElementStyle } from "./ThemeElement.module.scss";
+
+const style = bemCssModules(ThemeElementStyle);
+
 const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
   const [editThemeMode, setEditThemeMode] = useState(false);
 
@@ -29,13 +33,13 @@ const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
   };
 
   const defaultView = (
-    <li onDoubleClick={handleThemeEdit}>
+    <li className={style()} onDoubleClick={handleThemeEdit}>
       {themeName} <button>Usuń</button>
     </li>
   );
 
   const editView = (
-    <li>
+    <li className={style()}>
       <input type="text" defaultValue={themeName} ref={themeRef} />
       <button onClick={handleUpdateTheme}>OK</button>
       <button onClick={handleThemeEdit}>X</button>
