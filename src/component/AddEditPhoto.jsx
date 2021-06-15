@@ -27,6 +27,7 @@ const AddEditPhoto = () => {
     fetchPhotoData,
     handleClose,
     isModalActive,
+    themes,
   } = useContext(StoreContext);
 
   const clearModalAddPhoto = () => {
@@ -92,6 +93,11 @@ const AddEditPhoto = () => {
       setValidation(data.message);
     }
   };
+
+  const selectOptions = themes.map((theme) => ({
+    label: theme.themeName,
+    value: theme.themeName,
+  }));
 
   useEffect(() => {
     if (isModalActive) {
@@ -171,11 +177,11 @@ const AddEditPhoto = () => {
         <div className={style("login-input")}>
           <label>
             Temat
-            <input
-              onChange={(e) => setTheme(e.target.value)}
-              type="text"
-              value={theme}
-            />
+            <select onChange={(e) => setTheme(e.target.value)} value={theme}>
+              {selectOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
           </label>
         </div>
         <div className={style("login-input")}>
