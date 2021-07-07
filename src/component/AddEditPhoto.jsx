@@ -178,6 +178,7 @@ const AddEditPhoto = () => {
           <label>
             Temat
             <select onChange={(e) => setTheme(e.target.value)} value={theme}>
+              <option value="none">none</option>
               {selectOptions.map((option) => (
                 <option value={option.value}>{option.label}</option>
               ))}
