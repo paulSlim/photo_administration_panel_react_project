@@ -60,9 +60,9 @@ const PhotoElmnt = ({
       <div className={style("photo-card-content")} onClick={handleDisplayPhoto}>
         <ul className={style("info")}>
           <li className={style("info-title")}>{title}</li>
-          <li className={style("info-keywords")}>{keywords}</li>
           <li className={style("info-theme")}>{theme}</li>
           <li className={style("info-description")}>{description}</li>
+          <li className={style("info-keywords")}>{keywords.join(", ")}</li>
         </ul>
       </div>
     </div>

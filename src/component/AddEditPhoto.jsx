@@ -15,7 +15,7 @@ const AddEditPhoto = () => {
   const [description, setDescription] = useState("");
   const [fileAddress, setFileAddress] = useState("");
   const [id, setId] = useState("");
-  const [keywords, setKeywords] = useState("");
+  const [keywords, setKeywords] = useState([]);
   const [theme, setTheme] = useState("");
   const [title, setTitle] = useState("");
 
@@ -64,7 +64,7 @@ const AddEditPhoto = () => {
       fileAddress,
       title,
       description,
-      keywords,
+      keywords: keywords.split(","),
       theme,
     });
     if (status === 201) {
@@ -77,12 +77,13 @@ const AddEditPhoto = () => {
 
   const handlePhotoEdit = async (e) => {
     e.preventDefault();
+
     const { data, status } = await request.put("/photos", {
       id,
       fileAddress,
       title,
       description,
-      keywords,
+      keywords: keywords.split(","),
       theme,
     });
     if (status === 202) {
