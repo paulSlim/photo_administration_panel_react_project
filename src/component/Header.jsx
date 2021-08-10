@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import bemCssModules from "bem-css-modules";
 import { default as HeaderStyles } from "./Header.module.scss";
@@ -12,9 +12,18 @@ import LoginForm from "./LoginForm";
 const style = bemCssModules(HeaderStyles);
 
 const Header = () => {
-  const { handleModalContent, modalContent, setEditMode, user } = useContext(
-    StoreContext
-  );
+  const [filteredWord, setFilteredWord] = useState("");
+
+  const {
+    fetchPhotoData,
+    handleModalContent,
+    modalContent,
+    photos,
+    photosCache,
+    setEditMode,
+    setPhotos,
+    user,
+  } = useContext(StoreContext);
 
   const isUserLogged = user ? "Wyloguj się" : "Zaloguj się";
 
@@ -22,6 +31,20 @@ const Header = () => {
     setEditMode(false);
     handleModalContent("isAddEditPhotoActive"); //
   };
+
+  const filterPhotosOnKeyword = () => {
+    const filteredPhotos = photosCache.filter((photo) =>
+      photo.keywords.some((word) => word.includes(filteredWord))
+    );
+    console.log(filteredPhotos);
+    if (filteredPhotos) {
+      setPhotos(filteredPhotos);
+    }
+  };
+
+  useEffect(() => {
+    filterPhotosOnKeyword();
+  }, [filteredWord]);
 
   return (
     <header className={style()}>
@@ -36,6 +59,11 @@ const Header = () => {
         >
           Tematy
         </button>
+        <input
+          placeholder="słowa kluczowe"
+          type="text"
+          onChange={(e) => setFilteredWord(e.target.value.toLowerCase())}
+        />
         <button
           onClick={() => handleModalContent("isLoginFormActive")}
           className={style("fn-btn")}

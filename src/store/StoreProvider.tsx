@@ -1,16 +1,26 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+
+import {
+  EditMode,
+  ModalActive,
+  ModalContent,
+  Photo,
+  Theme,
+  User,
+} from "../data.types/StoreProvider";
 
 import request from "../helpers/request";
 
-const StoreProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [photos, setPhotos] = useState([]);
-  const [themes, setThemes] = useState([]);
+const StoreProvider = ({ children }: any): JSX.Element => {
+  const [user, setUser] = useState<User | null>(null);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photosCache, setPhotosCache] = useState<Photo[]>([]);
+  const [themes, setThemes] = useState<Theme[]>([]);
 
-  const [editMode, setEditMode] = useState(false);
-  const [currentPhoto, setCurrentPhoto] = useState(null);
-  const [isModalActive, setIsModalActive] = useState(false);
-  const [modalContent, setModalContent] = useState({
+  const [editMode, setEditMode] = useState<EditMode>(false);
+  const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
+  const [isModalActive, setIsModalActive] = useState<ModalActive>(false);
+  const [modalContent, setModalContent] = useState<ModalContent>({
     isAddEditPhotoActive: false,
     isAddEditThemeActive: false,
     isEditPhotoActive: false,
@@ -18,41 +28,46 @@ const StoreProvider = ({ children }) => {
     isLoginFormActive: false,
   });
 
-  const fetchPhotoData = async () => {
+  const fetchPhotoData = async (): Promise<void> => {
     const { data } = await request.get("/photos");
     setPhotos(data.photos);
+    setPhotosCache(data.photos);
   };
 
-  const fetchThemesData = async () => {
+  const fetchThemesData = async (): Promise<void> => {
     const { data } = await request.get("/themes");
     setThemes(data.themes);
   };
 
-  const handleClose = () => setIsModalActive(false);
+  const handleClose = (): void => {
+    setIsModalActive(false);
+  };
 
-  const handleModalContent = (property) => {
+  const handleModalContent = (property: string) => {
     if (user) {
       setUser(null);
     } else {
       setIsModalActive(true);
     }
 
-    let switchModalTemp = {
+    let switchModalTemp: ModalContent = {
       isAddEditPhotoActive: false,
       isAddEditThemeActive: false,
+      isEditPhotoActive: false,
       isDisplayPhotoActive: false,
       isLoginFormActive: false,
     };
-    switchModalTemp.[property] = true; // prettier-ignore
+    switchModalTemp[property] = true;
     setModalContent(switchModalTemp);
   };
 
-  const photoDelete = async (id) => {
+  const photoDelete = async (id: Photo): Promise<void> => {
     const { data, status } = await request.delete(`/photos/${id}`);
     if (status === 200) {
       fetchPhotoData();
     } else {
-      setValidation(data.message);
+      console.log(data.message);
+      // setValidation(data.message);
     }
   };
 
@@ -78,6 +93,7 @@ const StoreProvider = ({ children }) => {
         modalContent,
         photoDelete,
         photos,
+        photosCache,
         setCurrentPhoto,
         setEditMode,
         setIsModalActive,
@@ -94,6 +110,6 @@ const StoreProvider = ({ children }) => {
   );
 };
 
-export const StoreContext = createContext(StoreProvider);
+export const StoreContext = createContext<any>(StoreProvider);
 
 export default StoreProvider;
