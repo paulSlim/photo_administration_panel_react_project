@@ -18,6 +18,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
   const [themes, setThemes] = useState<Theme[]>([]);
 
   const [editMode, setEditMode] = useState<EditMode>(false);
+  const [filteredWord, setFilteredWord] = useState("");
   const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
   const [isModalActive, setIsModalActive] = useState<ModalActive>(false);
   const [modalContent, setModalContent] = useState<ModalContent>({
@@ -87,6 +88,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
         editMode,
         fetchPhotoData,
         fetchThemesData,
+        filteredWord,
         handleClose,
         handleModalContent,
         isModalActive,
@@ -96,6 +98,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
         photosCache,
         setCurrentPhoto,
         setEditMode,
+        setFilteredWord,
         setIsModalActive,
         setModalContent,
         setPhotos,

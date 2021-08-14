@@ -13,35 +13,42 @@ import makeAnimated from "react-select/animated";
 const FlexSearch = () => {
   const [themeFilters, setThemeFilters] = useState([]);
 
-  const { fetchPhotoData, setPhotos, themes } = useContext(StoreContext);
+  const {
+    fetchPhotoData,
+    filteredWord,
+    photosCache,
+    setPhotos,
+    themes,
+  } = useContext(StoreContext);
 
   const selectOptions = themes.map((theme) => ({
     label: theme.themeName,
     value: theme.themeName,
   }));
 
-  const fetchPhotoArray = async () => {
-    const { data } = await request.get("/photos");
-    return data.photos;
-  };
+  const displayFilteredPhotos = () => {
+    const filteredPhotos = photosCache;
+    if (themeFilters.length > 0) {
+      filteredPhotos = filteredPhotos.filter((photo) =>
+        themeFilters.some((theme) => theme.label === photo.theme)
+      );
+    }
 
-  const displayFilteredPhotos = async () => {
-    let filteredPhotos = await fetchPhotoArray();
-    filteredPhotos = await filteredPhotos.filter((photo) => {
-      return themeFilters.some((theme) => theme.label === photo.theme);
-    });
-    await setPhotos(filteredPhotos);
+    if (filteredWord) {
+      filteredPhotos = filteredPhotos.filter((photo) =>
+        photo.keywords.some((word) => word.includes(filteredWord))
+      );
+    }
+    setPhotos(filteredPhotos);
   };
 
   useEffect(() => {
-    if (themeFilters.length > 0) {
+    if (themeFilters.length > 0 || filteredWord) {
       displayFilteredPhotos();
+    } else {
+      setPhotos(photosCache);
     }
-
-    if (themeFilters.length <= 0) {
-      fetchPhotoData();
-    }
-  }, [themeFilters]);
+  }, [themeFilters, filteredWord]);
 
   return (
     <div>

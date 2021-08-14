@@ -12,16 +12,11 @@ import LoginForm from "./LoginForm";
 const style = bemCssModules(HeaderStyles);
 
 const Header = () => {
-  const [filteredWord, setFilteredWord] = useState("");
-
   const {
-    fetchPhotoData,
     handleModalContent,
     modalContent,
-    photos,
-    photosCache,
     setEditMode,
-    setPhotos,
+    setFilteredWord,
     user,
   } = useContext(StoreContext);
 
@@ -31,20 +26,6 @@ const Header = () => {
     setEditMode(false);
     handleModalContent("isAddEditPhotoActive"); //
   };
-
-  const filterPhotosOnKeyword = () => {
-    const filteredPhotos = photosCache.filter((photo) =>
-      photo.keywords.some((word) => word.includes(filteredWord))
-    );
-    console.log(filteredPhotos);
-    if (filteredPhotos) {
-      setPhotos(filteredPhotos);
-    }
-  };
-
-  useEffect(() => {
-    filterPhotosOnKeyword();
-  }, [filteredWord]);
 
   return (
     <header className={style()}>
