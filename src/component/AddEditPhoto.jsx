@@ -54,8 +54,6 @@ const AddEditPhoto = () => {
     e.preventDefault();
     const dataForm = new FormData();
     dataForm.append("file", selectedFile);
-    console.log("dataForm file: " + dataForm);
-
     await request.post("/upload", dataForm).then((res) => {
       console.log(res.statusText);
     });
@@ -78,12 +76,25 @@ const AddEditPhoto = () => {
   const handlePhotoEdit = async (e) => {
     e.preventDefault();
 
+    const keywordsSplit = () => {
+      const keywordsArray = keywords;
+      if (typeof keywordsArray === "string") {
+        if (keywordsArray.includes(",")) {
+          keywordsArray = keywords.split(",");
+        }
+        if (keywordsArray.includes(" ")) {
+          keywordsArray = keywords.split(" ");
+        }
+      }
+      return keywordsArray;
+    };
+
     const { data, status } = await request.put("/photos", {
       id,
       fileAddress,
       title,
       description,
-      keywords: keywords.split(","),
+      keywords: keywordsSplit(),
       theme,
     });
     if (status === 202) {

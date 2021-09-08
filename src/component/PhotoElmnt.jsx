@@ -62,7 +62,7 @@ const PhotoElmnt = ({
           <li className={style("info-title")}>{title}</li>
           <li className={style("info-theme")}>{theme}</li>
           <li className={style("info-description")}>{description}</li>
-          <li className={style("info-keywords")}>{keywords.join(", ")}</li>
+          <li className={style("info-keywords")}>{keywords}</li>
         </ul>
       </div>
     </div>
