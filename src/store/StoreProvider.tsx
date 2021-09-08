@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 
 import {
   EditMode,
+  FilterTheme,
   ModalActive,
   ModalContent,
   Photo,
@@ -17,9 +18,9 @@ const StoreProvider = ({ children }: any): JSX.Element => {
   const [photosCache, setPhotosCache] = useState<Photo[]>([]);
   const [themes, setThemes] = useState<Theme[]>([]);
 
+  const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
   const [editMode, setEditMode] = useState<EditMode>(false);
   const [filteredWord, setFilteredWord] = useState("");
-  const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
   const [isModalActive, setIsModalActive] = useState<ModalActive>(false);
   const [modalContent, setModalContent] = useState<ModalContent>({
     isAddEditPhotoActive: false,
@@ -28,10 +29,31 @@ const StoreProvider = ({ children }: any): JSX.Element => {
     isDisplayPhotoActive: false,
     isLoginFormActive: false,
   });
+  const [themeFilters, setThemeFilters] = useState<FilterTheme[]>([]);
+
+  const displayFilteredPhotos = () => {
+    console.log("photoCache", photosCache);
+
+    let filteredPhotos = photosCache;
+
+    if (themeFilters.length > 0) {
+      filteredPhotos = filteredPhotos.filter((photo) =>
+        themeFilters.some((theme) => theme.label === photo.theme)
+      );
+    }
+
+    if (filteredWord) {
+      filteredPhotos = filteredPhotos.filter((photo) =>
+        photo.keywords.some((word) => word.toLowerCase().includes(filteredWord))
+      );
+    }
+    console.log("filtrowane!!", filteredPhotos);
+
+    setPhotos(filteredPhotos);
+  };
 
   const fetchPhotoData = async (): Promise<void> => {
     const { data } = await request.get("/photos");
-    setPhotos(data.photos);
     setPhotosCache(data.photos);
   };
 
@@ -81,10 +103,15 @@ const StoreProvider = ({ children }: any): JSX.Element => {
     // } else return;
   }, []);
 
+  useEffect(() => {
+    displayFilteredPhotos();
+  }, [photosCache]);
+
   return (
     <StoreContext.Provider
       value={{
         currentPhoto,
+        displayFilteredPhotos,
         editMode,
         fetchPhotoData,
         fetchThemesData,
@@ -103,8 +130,10 @@ const StoreProvider = ({ children }: any): JSX.Element => {
         setModalContent,
         setPhotos,
         setThemes,
+        setThemeFilters,
         setUser,
         themes,
+        themeFilters,
         user,
       }}
     >

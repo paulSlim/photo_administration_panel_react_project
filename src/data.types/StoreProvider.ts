@@ -1,5 +1,10 @@
 export type EditMode = boolean;
 
+export interface FilterTheme {
+  label: string;
+  value: string;
+}
+
 export type ModalActive = boolean;
 
 export interface ModalContent {
@@ -15,7 +20,7 @@ export interface Photo {
   id: string;
   title: string;
   description: string;
-  keywords: string;
+  keywords: string[];
   theme: string;
 }
 
