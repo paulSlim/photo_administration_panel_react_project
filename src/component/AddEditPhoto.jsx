@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 
 import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
@@ -28,7 +28,13 @@ const AddEditPhoto = () => {
     handleClose,
     isModalActive,
     themes,
+    setValidation,
+    validation,
   } = useContext(StoreContext);
+
+  const validationElement = validation.length ? (
+    <span className={style("validation")}>{validation}</span>
+  ) : null;
 
   const clearModalAddPhoto = () => {
     setSelectedFile("");
@@ -135,6 +141,7 @@ const AddEditPhoto = () => {
       isModalActive={isModalActive}
       handleClose={handleClose}
     >
+      {validationElement}
       <form
         className={style()}
         method={editMode ? "put" : "post"}

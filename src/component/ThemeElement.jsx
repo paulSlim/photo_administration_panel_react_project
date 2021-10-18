@@ -1,13 +1,19 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import bemCssModules from "bem-css-modules";
 import request from "../helpers/request";
+
+import { StoreContext } from "../store/StoreProvider";
 
 import { default as ThemeElementStyle } from "./ThemeElement.module.scss";
 
 const style = bemCssModules(ThemeElementStyle);
 
-const ThemeElement = ({ id, fetchPhotoData, fetchThemesData, themeName }) => {
+const ThemeElement = ({ id, themeName }) => {
   const [editThemeMode, setEditThemeMode] = useState(false);
+
+  const { fetchPhotoData, fetchThemesData, setValidation } = useContext(
+    StoreContext
+  );
 
   const oldThemeName = themeName;
   const themeRef = useRef("");

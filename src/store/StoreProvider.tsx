@@ -8,6 +8,7 @@ import {
   Photo,
   Theme,
   User,
+  Validation,
 } from "../data.types/StoreProvider";
 
 import request from "../helpers/request";
@@ -30,10 +31,9 @@ const StoreProvider = ({ children }: any): JSX.Element => {
     isLoginFormActive: false,
   });
   const [themeFilters, setThemeFilters] = useState<FilterTheme[]>([]);
+  const [validation, setValidation] = useState<Validation>("");
 
   const displayFilteredPhotos = () => {
-    console.log("photoCache", photosCache);
-
     let filteredPhotos = photosCache;
 
     if (themeFilters.length > 0) {
@@ -44,10 +44,17 @@ const StoreProvider = ({ children }: any): JSX.Element => {
 
     if (filteredWord) {
       filteredPhotos = filteredPhotos.filter((photo) =>
+        // let array = [...photo.keywords];
+        // array.push(photo.title);
+        // console.log(array);
+
+        // return array.some((word) => word.includes(filteredWord));
+        // // Object.values(photo).some((word) => word.includes(filteredWord))
+        // //   photo.title.toLowerCase().includes(filteredWord)
+        // // // );
         photo.keywords.some((word) => word.toLowerCase().includes(filteredWord))
       );
     }
-    console.log("filtrowane!!", filteredPhotos);
 
     setPhotos(filteredPhotos);
   };
@@ -90,7 +97,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
       fetchPhotoData();
     } else {
       console.log(data.message);
-      // setValidation(data.message);
+      setValidation(data.message);
     }
   };
 
@@ -132,9 +139,11 @@ const StoreProvider = ({ children }: any): JSX.Element => {
         setThemes,
         setThemeFilters,
         setUser,
+        setValidation,
         themes,
         themeFilters,
         user,
+        validation,
       }}
     >
       {children}

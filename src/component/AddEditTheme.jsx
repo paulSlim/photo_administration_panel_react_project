@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
@@ -19,7 +19,9 @@ const AddEditTheme = () => {
     fetchThemesData,
     handleClose,
     isModalActive,
+    setValidation,
     themes,
+    validation,
   } = useContext(StoreContext);
 
   const handleAddTheme = async (e) => {
@@ -30,6 +32,10 @@ const AddEditTheme = () => {
       setThemeName("");
     } else setValidation(data.message);
   };
+
+  const validationElement = validation.length ? (
+    <span className={style("validation")}>{validation}</span>
+  ) : null;
 
   const handleCloseModal = (e) => {
     e.preventDefault();
@@ -61,6 +67,7 @@ const AddEditTheme = () => {
       handleClose={handleClose}
     >
       <div className={style()}>
+        {validationElement}
         <h3>Lista tematów</h3>
         <ul>{themesList}</ul>
         <br />

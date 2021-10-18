@@ -69,6 +69,13 @@
 
   li {
     margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // display: -webkit-box;
+    // -webkit-box-orient: vertical;
+    // -webkit-line-clamp: 1;
+    // overflow: hidden;
   }
 
   &__info-title {

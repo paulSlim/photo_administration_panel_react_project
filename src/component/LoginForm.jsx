@@ -12,9 +12,10 @@ const style = bemCssModules(LoginFormStyles);
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [validation, setValidation] = useState("");
 
-  const { setUser, handleClose, isModalActive } = useContext(StoreContext);
+  const { setUser, handleClose, isModalActive, setValidation } = useContext(
+    StoreContext
+  );
 
   const validationElement = validation.length ? (
     <span className={style("validation")}>{validation}</span>

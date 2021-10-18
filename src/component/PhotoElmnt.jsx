@@ -5,6 +5,7 @@ import ActionMenu from "./ActionMenu";
 import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 import { default as PhotoElmntStyle } from "./PhotoElmnt.module.scss";
+import LoginForm from "./LoginForm";
 
 const style = bemCssModules(PhotoElmntStyle);
 
@@ -36,6 +37,25 @@ const PhotoElmnt = ({
     handleModalContent("isDisplayPhotoActive");
   };
 
+  const checkTruncation = (e) => {
+    if (e.currentTarget.scrollWidth > e.currentTarget.clientWidth) {
+      console.log("działa truncate");
+    }
+  };
+
+  const photoInfo = [{ title }, { theme }, { description }, { keywords }];
+
+  const infoList = photoInfo.map((elmnt) => {
+    const entries = Object.entries(elmnt);
+    const [key, value] = entries[0];
+    const className = `info-${key}`;
+    return (
+      <li className={style(className)} onMouseOver={checkTruncation}>
+        {value}
+      </li>
+    );
+  });
+
   return (
     <div className={style()}>
       {isMenuOpen && (
@@ -58,12 +78,7 @@ const PhotoElmnt = ({
         <span>{isMenuOpen ? "x" : "..."}</span>
       </div>
       <div className={style("photo-card-content")} onClick={handleDisplayPhoto}>
-        <ul className={style("info")}>
-          <li className={style("info-title")}>{title}</li>
-          <li className={style("info-theme")}>{theme}</li>
-          <li className={style("info-description")}>{description}</li>
-          <li className={style("info-keywords")}>{keywords}</li>
-        </ul>
+        <ul className={style("info")}>{infoList}</ul>
       </div>
     </div>
   );

@@ -35,6 +35,8 @@ export interface User {
   password: string;
 }
 
+export type Validation = string;
+
 // export type ContextProps = {
 // currentPhoto: Photo;
 // editMode: EditMode;
