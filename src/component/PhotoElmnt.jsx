@@ -6,6 +6,7 @@ import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 import { default as PhotoElmntStyle } from "./PhotoElmnt.module.scss";
 import LoginForm from "./LoginForm";
+import ReactTooltip from "react-tooltip";
 
 const style = bemCssModules(PhotoElmntStyle);
 
@@ -18,6 +19,7 @@ const PhotoElmnt = ({
   theme,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isTooltipActive, setIsTooltipActive] = useState(false);
 
   const { handleModalContent, setCurrentPhoto } = useContext(StoreContext);
 
@@ -37,10 +39,14 @@ const PhotoElmnt = ({
     handleModalContent("isDisplayPhotoActive");
   };
 
-  const checkTruncation = (e) => {
+  const displayTooltip = (e) => {
     if (e.currentTarget.scrollWidth > e.currentTarget.clientWidth) {
-      console.log("działa truncate");
+      setIsTooltipActive(true);
     }
+  };
+
+  const hideTooltip = () => {
+    setIsTooltipActive(false);
   };
 
   const photoInfo = [{ title }, { theme }, { description }, { keywords }];
@@ -50,7 +56,12 @@ const PhotoElmnt = ({
     const [key, value] = entries[0];
     const className = `info-${key}`;
     return (
-      <li className={style(className)} onMouseOver={checkTruncation}>
+      <li
+        className={style(className)}
+        data-tip={value}
+        onMouseEnter={displayTooltip}
+        onMouseLeave={hideTooltip}
+      >
         {value}
       </li>
     );
@@ -77,6 +88,7 @@ const PhotoElmnt = ({
       <div className={style("meatballs-menu")} onClick={handleIsMenuOpen}>
         <span>{isMenuOpen ? "x" : "..."}</span>
       </div>
+      {isTooltipActive && <ReactTooltip />}
       <div className={style("photo-card-content")} onClick={handleDisplayPhoto}>
         <ul className={style("info")}>{infoList}</ul>
       </div>
