@@ -10,6 +10,7 @@ module.exports = {
         test: /\.module\.s(a|c)ss$/,
         use: [
           "style-loader",
+          "css-modules-typescript-loader",
           {
             loader: "css-loader",
             options: {
@@ -31,6 +32,7 @@ module.exports = {
         exclude: /\.module.(s(a|c)ss)$/,
         use: [
           "style-loader",
+          "css-modules-typescript-loader",
           "css-loader",
           {
             loader: "sass-loader",
@@ -41,8 +43,8 @@ module.exports = {
         ],
       },
       // {
-      //   test: /\.css$/,
-      //   include: path.join(__dirname, "src/components"),
+      //   test: /\.scss$/,
+      //   include: path.join(__dirname, "src/component"),
       //   use: [
       //     "style-loader",
       //     {

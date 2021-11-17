@@ -5,6 +5,8 @@ export interface FilterTheme {
   value: string;
 }
 
+export type FilteredWord = string;
+
 export type ModalActive = boolean;
 
 export interface ModalContent {

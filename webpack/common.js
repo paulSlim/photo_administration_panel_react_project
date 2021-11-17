@@ -10,7 +10,7 @@ module.exports = {
     path: path(__dirname, "..", "build"),
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".scss"],
   },
   module: {
     rules: [

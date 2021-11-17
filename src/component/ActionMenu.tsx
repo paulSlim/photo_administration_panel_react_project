@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import bemCssModules from "bem-css-modules";
+import { useContext } from "react";
+// import bemCssModules from "bem-css-modules";
 import request from "../helpers/request";
 import { StoreContext } from "../store/StoreProvider";
 
-import { default as ActionMenuStyle } from "./ActionMenu.module.scss";
+import style from "./ActionMenu.module.scss";
 
-const style = bemCssModules(ActionMenuStyle);
+// const style = bemCssModules(ActionMenuStyle);
 
 const ActionMenu = ({
   id,
@@ -75,29 +75,36 @@ const ActionMenu = ({
     if (status === 200) {
       fetchPhotoData();
     } else {
-      setValidation(data.message);
+      console.warn(data.message);
+      // setValidation(data.message);
     }
   };
 
   return (
-    <div className={style()}>
-      <ul className={style("menu-fn-block")}>
-        <li className={style("menu-fn")} onClick={handleEditPhoto}>
+    <div className={style["menu-container"]}>
+      <ul className={style["menu-container__menu-fn-block"]}>
+        <li
+          className={style["menu-container__menu-fn"]}
+          onClick={handleEditPhoto}
+        >
           Edytuj
         </li>
-        <li className={style("menu-fn")} onClick={handlePhotoDelete}>
+        <li
+          className={style["menu-container__menu-fn"]}
+          onClick={handlePhotoDelete}
+        >
           {" "}
           Usuń
         </li>
         <li
-          className={style("menu-fn")}
+          className={style["menu-container__menu-fn"]}
           onClick={() => handleMovePhoto("prepend")}
         >
           {" "}
           Przesuń w lewo
         </li>
         <li
-          className={style("menu-fn")}
+          className={style["menu-container__menu-fn"]}
           onClick={() => handleMovePhoto("append")}
         >
           {" "}

@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   EditMode,
   FilterTheme,
+  FilteredWord,
   ModalActive,
   ModalContent,
   Photo,
@@ -21,7 +22,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
 
   const [currentPhoto, setCurrentPhoto] = useState<Photo | null>(null);
   const [editMode, setEditMode] = useState<EditMode>(false);
-  const [filteredWord, setFilteredWord] = useState("");
+  const [filteredWord, setFilteredWord] = useState<FilteredWord>("");
   const [isModalActive, setIsModalActive] = useState<ModalActive>(false);
   const [modalContent, setModalContent] = useState<ModalContent>({
     isAddEditPhotoActive: false,
@@ -33,7 +34,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
   const [themeFilters, setThemeFilters] = useState<FilterTheme[]>([]);
   const [validation, setValidation] = useState<Validation>("");
 
-  const displayFilteredPhotos = () => {
+  const displayFilteredPhotos = (): void => {
     let filteredPhotos = photosCache;
 
     if (themeFilters.length > 0) {
