@@ -3,7 +3,7 @@ import { StoreContext } from "../store/StoreProvider";
 
 import Select from "react-select";
 
-const FlexSearch = () => {
+const FlexSearch: React.FC = () => {
   const {
     displayFilteredPhotos,
     filteredWord,

@@ -5,9 +5,15 @@ import { StoreContext } from "../store/StoreProvider";
 
 import style from "./ActionMenu.module.scss";
 
+import { Photo } from "../data.types/StoreProvider";
+
 // const style = bemCssModules(ActionMenuStyle);
 
-const ActionMenu = ({
+interface Props extends Photo {
+  handleIsMenuOpen: () => void;
+}
+
+const ActionMenu: React.FC<Props> = ({
   id,
   fileAddress,
   description,
@@ -23,9 +29,10 @@ const ActionMenu = ({
     photoDelete,
     setCurrentPhoto,
     setEditMode,
+    setValidation,
   } = useContext(StoreContext);
 
-  const handleEditPhoto = () => {
+  const handleEditPhoto = (): void => {
     setEditMode(true);
     setCurrentPhoto({
       id,
@@ -39,12 +46,12 @@ const ActionMenu = ({
     handleIsMenuOpen();
   };
 
-  const handlePhotoDelete = () => {
+  const handlePhotoDelete = (): void => {
     photoDelete(id);
     handleIsMenuOpen();
   };
 
-  const handleMovePhoto = async (direction) => {
+  const handleMovePhoto = async (direction: string): Promise<void> => {
     const indexPhotoToMove = photos.findIndex((photo) => photo.id === id);
     console.log("indexPhotoToMove", indexPhotoToMove);
 
@@ -75,8 +82,7 @@ const ActionMenu = ({
     if (status === 200) {
       fetchPhotoData();
     } else {
-      console.warn(data.message);
-      // setValidation(data.message);
+      setValidation(data.message);
     }
   };
 

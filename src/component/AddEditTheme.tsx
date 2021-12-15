@@ -1,18 +1,18 @@
 import { useState, useContext, useEffect } from "react";
 
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 import request from "../helpers/request";
 
 import Modal from "./Modal";
 import ThemeElement from "./ThemeElement";
 
-import { default as LoginFormStyles } from "./LoginForm.module.scss";
+import style from "./LoginForm.module.scss";
 
-const style = bemCssModules(LoginFormStyles);
+// const style = bemCssModules(LoginFormStyles);
 
-const AddEditTheme = () => {
-  const [themeName, setThemeName] = useState("");
+const AddEditTheme: React.FC = () => {
+  const [themeName, setThemeName] = useState<string>("");
 
   const {
     fetchPhotoData,
@@ -24,7 +24,7 @@ const AddEditTheme = () => {
     validation,
   } = useContext(StoreContext);
 
-  const handleAddTheme = async (e) => {
+  const handleAddTheme = async (e: Event): Promise<void> => {
     e.preventDefault();
     const { data, status } = await request.post("/themes", { themeName });
     if (status === 201) {
@@ -34,24 +34,17 @@ const AddEditTheme = () => {
   };
 
   const validationElement = validation.length ? (
-    <span className={style("validation")}>{validation}</span>
+    <span className={style["login-form__validation"]}>{validation}</span>
   ) : null;
 
-  const handleCloseModal = (e) => {
+  const handleCloseModal = (e: Event) => {
     e.preventDefault();
     handleClose();
     setThemeName("");
   };
 
   const themesList = themes.map((theme) => (
-    <ThemeElement
-      className={style("theme-element")}
-      key={theme.id}
-      id={theme.id}
-      themeName={theme.themeName}
-      fetchPhotoData={fetchPhotoData}
-      fetchThemesData={fetchThemesData}
-    />
+    <ThemeElement key={theme.id} id={theme.id} themeName={theme.themeName} />
   ));
 
   useEffect(() => {
@@ -66,14 +59,14 @@ const AddEditTheme = () => {
       isModalActive={isModalActive}
       handleClose={handleClose}
     >
-      <div className={style()}>
+      <div className={style["login-form"]}>
         {validationElement}
         <h3>Lista tematów</h3>
         <ul>{themesList}</ul>
         <br />
         <h3>Dodaj temat</h3>
-        <form method="post" onSubmit={handleAddTheme}>
-          <div className={style("login-input")}>
+        <form method="post" onSubmit={(e) => handleAddTheme}>
+          <div className={style["login-form__login-input"]}>
             <label>
               Nazwa tematu
               <input
@@ -83,11 +76,11 @@ const AddEditTheme = () => {
               />
             </label>
           </div>
-          <div className={style("login-input")}>
+          <div className={style["login-form__login-input"]}>
             <button type="submit" disabled={!themeName}>
               Dodaj temat
             </button>
-            <button onClick={handleCloseModal}>Anuluj</button>
+            <button onClick={(e) => handleCloseModal}>Anuluj</button>
           </div>
         </form>
       </div>

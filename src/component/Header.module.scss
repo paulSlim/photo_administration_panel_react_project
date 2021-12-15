@@ -44,7 +44,8 @@
       border-bottom: 2px solid black;
     }
 
-    button:nth-of-type(3) {
+    button:nth-of-type(3),
+    button:nth-of-type(4) {
       float: right;
       margin-right: 15px;
     }

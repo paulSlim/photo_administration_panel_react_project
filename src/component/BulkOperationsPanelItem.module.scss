@@ -1,0 +1,18 @@
+.panel-item {
+  display: inline-block;
+  line-height: 1em;
+  padding: 1em;
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+  font-size: 1em;
+
+  &:hover {
+    background-color: lightgray;
+  }
+
+  &:visited,
+  &:active {
+    color: black;
+  }
+}

@@ -7,6 +7,13 @@
   border-radius: 5%;
   cursor: pointer;
 
+  &__bulk-checkbox {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1;
+  }
+
   &__image {
     max-width: 23vw;
     height: 23vh;

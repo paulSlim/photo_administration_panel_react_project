@@ -1,36 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
-import bemCssModules from "bem-css-modules";
+import { useContext, useEffect, useState } from "react";
+// import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 
 import Modal from "./Modal";
-import { default as LoginFormStyles } from "./LoginForm.module.scss";
+import style from "./LoginForm.module.scss";
 
 import request from "../helpers/request";
 
-const style = bemCssModules(LoginFormStyles);
+// const style = bemCssModules(LoginFormStyles);
 
-const LoginForm = () => {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+const LoginForm: React.FC = () => {
+  const [login, setLogin] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const { setUser, handleClose, isModalActive, setValidation } = useContext(
-    StoreContext
-  );
+  const {
+    setUser,
+    handleClose,
+    isModalActive,
+    setValidation,
+    validation,
+  } = useContext(StoreContext);
 
   const validationElement = validation.length ? (
-    <span className={style("validation")}>{validation}</span>
+    <span className={style["login-form__validation"]}>{validation}</span>
   ) : null;
 
-  const handleOnChangeLogin = ({ target }) => setLogin(target.value);
-  const handleOnChangePassword = ({ target: { value } }) => setPassword(value);
+  const handleOnChangeLogin = ({
+    target,
+  }: {
+    target: HTMLInputElement;
+  }): void => setLogin(target.value);
+  const handleOnChangePassword = ({
+    target: { value },
+  }: {
+    target: HTMLInputElement;
+  }) => setPassword(value);
 
-  const clearModal = () => {
+  const clearModal = (): void => {
     setLogin("");
     setPassword("");
     setValidation("");
   };
 
-  const handleOnSubmit = async (e) => {
+  const handleOnSubmit = async (e: Event): Promise<void> => {
     e.preventDefault();
     const { data, status } = await request.post("/users", { login, password });
     if (status === 200) {
@@ -41,7 +53,7 @@ const LoginForm = () => {
       setValidation(data.message);
     }
   };
-  const handleCloseModal = (e) => {
+  const handleCloseModal = (e: Event) => {
     e.preventDefault();
     handleClose();
   };
@@ -59,14 +71,18 @@ const LoginForm = () => {
       handleClose={handleClose}
     >
       {validationElement}
-      <form className={style()} method="post" onSubmit={handleOnSubmit}>
-        <div className={style("login-input")}>
+      <form
+        className={style["login-form"]}
+        method="post"
+        onSubmit={(e) => handleOnSubmit}
+      >
+        <div className={style["login-form__login-input"]}>
           <label>
             Login:
             <input onChange={handleOnChangeLogin} type="text" value={login} />
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <label>
             Hasło:
             <input
@@ -76,9 +92,9 @@ const LoginForm = () => {
             />
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <button type="submit">Zaloguj się</button>
-          <button onClick={handleCloseModal} type="button">
+          <button onClick={(e) => handleCloseModal} type="button">
             Anuluj
           </button>
         </div>

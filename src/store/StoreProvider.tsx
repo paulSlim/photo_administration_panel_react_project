@@ -1,12 +1,15 @@
+import * as React from "react";
 import { createContext, useEffect, useState } from "react";
 
 import {
+  ContextProps,
   EditMode,
   FilterTheme,
   FilteredWord,
   ModalActive,
   ModalContent,
   Photo,
+  SelectedPhotos,
   Theme,
   User,
   Validation,
@@ -14,7 +17,9 @@ import {
 
 import request from "../helpers/request";
 
-const StoreProvider = ({ children }: any): JSX.Element => {
+const StoreProvider: React.FC<React.ReactNode> = ({
+  children,
+}): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [photosCache, setPhotosCache] = useState<Photo[]>([]);
@@ -31,6 +36,9 @@ const StoreProvider = ({ children }: any): JSX.Element => {
     isDisplayPhotoActive: false,
     isLoginFormActive: false,
   });
+  const [selectedPhotoIds, setSelectedPhotoIds] = useState<SelectedPhotos[]>(
+    []
+  );
   const [themeFilters, setThemeFilters] = useState<FilterTheme[]>([]);
   const [validation, setValidation] = useState<Validation>("");
 
@@ -92,7 +100,7 @@ const StoreProvider = ({ children }: any): JSX.Element => {
     setModalContent(switchModalTemp);
   };
 
-  const photoDelete = async (id: Photo): Promise<void> => {
+  const photoDelete = async (id: string): Promise<void> => {
     const { data, status } = await request.delete(`/photos/${id}`);
     if (status === 200) {
       fetchPhotoData();
@@ -131,12 +139,14 @@ const StoreProvider = ({ children }: any): JSX.Element => {
         photoDelete,
         photos,
         photosCache,
+        selectedPhotoIds,
         setCurrentPhoto,
         setEditMode,
         setFilteredWord,
         setIsModalActive,
         setModalContent,
         setPhotos,
+        setSelectedPhotoIds,
         setThemes,
         setThemeFilters,
         setUser,
@@ -152,6 +162,6 @@ const StoreProvider = ({ children }: any): JSX.Element => {
   );
 };
 
-export const StoreContext = createContext<any>(StoreProvider);
+export const StoreContext = createContext<ContextProps>({} as ContextProps);
 
 export default StoreProvider;

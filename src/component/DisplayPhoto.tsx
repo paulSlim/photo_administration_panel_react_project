@@ -1,16 +1,16 @@
-import React, { useState, useContext } from "react";
+import { useContext } from "react";
 
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 
 // import request from '../helpers/request';
 
 import Modal from "./Modal";
-import { default as DisplayPhotoStyle } from "./DisplayPhoto.module.scss";
+import style from "./DisplayPhoto.module.scss";
 
-const style = bemCssModules(DisplayPhotoStyle);
+// const style = bemCssModules(DisplayPhotoStyle);
 
-const PhotoDisplay = () => {
+const PhotoDisplay: React.FC = () => {
   const {
     currentPhoto,
     handleClose,
@@ -19,9 +19,9 @@ const PhotoDisplay = () => {
     setCurrentPhoto,
   } = useContext(StoreContext);
 
-  const displaySwitch = (direction) => {
-    let currentPhotoIndex = photos.findIndex(
-      (photo) => photo.id === currentPhoto.id
+  const displaySwitch = (direction: string) => {
+    let currentPhotoIndex: number = photos.findIndex(
+      (photo) => photo.id === currentPhoto!.id
     );
 
     if (direction === "prev") {
@@ -45,16 +45,22 @@ const PhotoDisplay = () => {
       isModalActive={isModalActive}
       handleClose={handleClose}
     >
-      <div className={style()}>
+      <div>
         <img
-          className={style("photo")}
-          src={`http://localhost:8000/${currentPhoto.fileAddress}`}
-          alt={currentPhoto.title}
+          className={style["display-img__photo"]}
+          src={`http://localhost:8000/${currentPhoto!.fileAddress}`}
+          alt={currentPhoto!.title}
         />
-        <span className={style("prev")} onClick={() => displaySwitch("prev")}>
+        <span
+          className={style["display-img__prev"]}
+          onClick={() => displaySwitch("prev")}
+        >
           &#10094;
         </span>
-        <span className={style("next")} onClick={() => displaySwitch("next")}>
+        <span
+          className={style["display-img__next"]}
+          onClick={() => displaySwitch("next")}
+        >
           &#10095;
         </span>
       </div>

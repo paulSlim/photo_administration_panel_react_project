@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'photo-card': string;
+  'photo-card__bulk-checkbox': string;
   'photo-card__image': string;
   'photo-card__info': string;
   'photo-card__info-title': string;

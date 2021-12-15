@@ -1,24 +1,26 @@
 import { useState, useRef, useContext } from "react";
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 import request from "../helpers/request";
 
 import { StoreContext } from "../store/StoreProvider";
 
-import { default as ThemeElementStyle } from "./ThemeElement.module.scss";
+import style from "./ThemeElement.module.scss";
 
-const style = bemCssModules(ThemeElementStyle);
+// const style = bemCssModules(ThemeElementStyle);
 
-const ThemeElement = ({ id, themeName }) => {
-  const [editThemeMode, setEditThemeMode] = useState(false);
+import { Theme } from "../data.types/StoreProvider";
+
+const ThemeElement: React.FC<Theme> = ({ id, themeName }) => {
+  const [editThemeMode, setEditThemeMode] = useState<boolean>(false);
 
   const { fetchPhotoData, fetchThemesData, setValidation } = useContext(
     StoreContext
   );
 
   const oldThemeName = themeName;
-  const themeRef = useRef("");
+  const themeRef = useRef<HTMLInputElement>(null);
 
-  const handleDeleteTheme = async () => {
+  const handleDeleteTheme = async (): Promise<void> => {
     console.log("id", id);
     const { data, status } = await request.delete(`/themes/${id}`);
     if (status === 200) {
@@ -27,12 +29,12 @@ const ThemeElement = ({ id, themeName }) => {
     } else setValidation(data.message);
   };
 
-  const handleThemeEdit = () => {
+  const handleThemeEdit = (): void => {
     setEditThemeMode((prevValue) => !prevValue);
   };
 
-  const handleUpdateTheme = async () => {
-    const themeName = themeRef.current.value;
+  const handleUpdateTheme = async (): Promise<void> => {
+    const themeName: string = themeRef.current!.value;
     console.log("old name:" + oldThemeName);
     console.log("new name:" + themeName);
     const { data, status } = await request.put("/themes", {
@@ -48,13 +50,13 @@ const ThemeElement = ({ id, themeName }) => {
   };
 
   const defaultView = (
-    <li className={style()} onDoubleClick={handleThemeEdit}>
+    <li onDoubleClick={handleThemeEdit}>
       {themeName} <button onClick={handleDeleteTheme}>Usuń</button>
     </li>
   );
 
   const editView = (
-    <li className={style()}>
+    <li>
       <input type="text" defaultValue={themeName} ref={themeRef} />
       <button onClick={handleUpdateTheme}>OK</button>
       <button onClick={handleThemeEdit}>X</button>

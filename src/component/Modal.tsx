@@ -1,14 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 
-import { default as Styles } from "./Modal.module.scss";
+import style from "./Modal.module.scss";
 
-const style = bemCssModules(Styles);
+// const style = bemCssModules(Styles);
 
-const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
-  const modalRef = useRef(null);
-  const prevElement = useRef(null);
+interface Props {
+  children: React.ReactNode;
+  isModalActive: boolean;
+  outsideClick: boolean;
+  handleClose: () => void;
+}
+
+const Modal: React.FC<Props> = ({
+  children,
+  isModalActive,
+  outsideClick,
+  handleClose,
+}) => {
+  const modalRef = useRef<any>(null);
+  const prevElement = useRef<any>(null);
 
   const handleOutsideClick = ({ target }) => {
     const { current } = modalRef;
@@ -40,15 +52,15 @@ const Modal = ({ children, isModalActive, outsideClick, handleClose }) => {
       handleClose();
     };
 
-    modal.addEventListener("cancel", handleCancel);
+    modal!.addEventListener("cancel", handleCancel);
 
     return () => {
-      modal.removeEventListener("cancel", handleCancel);
+      modal!.removeEventListener("cancel", handleCancel);
     };
   }, [handleClose]);
 
   return ReactDOM.createPortal(
-    <dialog className={style()} ref={modalRef} onClick={handleOutsideClick}>
+    <dialog className={style.modal} ref={modalRef} onClick={handleOutsideClick}>
       {children}
     </dialog>,
     document.body

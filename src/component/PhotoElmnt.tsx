@@ -1,33 +1,43 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 
 import ActionMenu from "./ActionMenu";
 
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
-import { default as PhotoElmntStyle } from "./PhotoElmnt.module.scss";
+import style from "./PhotoElmnt.module.scss";
 import LoginForm from "./LoginForm";
 import ReactTooltip from "react-tooltip";
+import BulkCheckbox from "./BulkCheckbox";
 
-const style = bemCssModules(PhotoElmntStyle);
+// const style = bemCssModules(PhotoElmntStyle);
 
-const PhotoElmnt = ({
+import { Photo, SelectedPhotos } from "../data.types/StoreProvider";
+
+interface PhotoElement extends Photo {
+  selectPhoto: (idObject: SelectedPhotos) => void;
+  deselectPhoto: (idObject: SelectedPhotos) => void;
+}
+
+const PhotoElmnt: React.FC<PhotoElement> = ({
   id,
   description,
   fileAddress,
   title,
   keywords,
   theme,
+  selectPhoto,
+  deselectPhoto,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTooltipActive, setIsTooltipActive] = useState(false);
 
   const { handleModalContent, setCurrentPhoto } = useContext(StoreContext);
 
-  const handleIsMenuOpen = () => {
-    setIsMenuOpen((prevValue) => !prevValue);
+  const handleIsMenuOpen = (): void => {
+    setIsMenuOpen((prevValue: boolean) => !prevValue);
   };
 
-  const handleDisplayPhoto = () => {
+  const handleDisplayPhoto = (): void => {
     setCurrentPhoto({
       id,
       description,
@@ -39,8 +49,12 @@ const PhotoElmnt = ({
     handleModalContent("isDisplayPhotoActive");
   };
 
-  const displayTooltip = (e) => {
-    if (e.currentTarget.scrollWidth > e.currentTarget.clientWidth) {
+  const displayTooltip = (e: Event) => {
+    const target = e.currentTarget as EventTarget;
+    if (
+      (e.currentTarget as HTMLDivElement).scrollWidth >
+      (e.currentTarget as HTMLDivElement).clientWidth
+    ) {
       setIsTooltipActive(true);
     }
   };
@@ -51,15 +65,16 @@ const PhotoElmnt = ({
 
   const photoInfo = [{ title }, { theme }, { description }, { keywords }];
 
-  const infoList = photoInfo.map((elmnt) => {
+  const infoList = photoInfo.map((elmnt, index) => {
     const entries = Object.entries(elmnt);
     const [key, value] = entries[0];
-    const className = `info-${key}`;
+    const className = key === "title" ? style["photo-card__info-title"] : "";
     return (
       <li
-        className={style(className)}
+        key={index}
+        className={className}
         data-tip={value}
-        onMouseEnter={displayTooltip}
+        onMouseEnter={(e) => displayTooltip}
         onMouseLeave={hideTooltip}
       >
         {value}
@@ -68,7 +83,12 @@ const PhotoElmnt = ({
   });
 
   return (
-    <div className={style()}>
+    <div className={style["photo-card"]}>
+      <BulkCheckbox
+        id={id}
+        selectPhoto={selectPhoto}
+        deselectPhoto={deselectPhoto}
+      />
       {isMenuOpen && (
         <ActionMenu
           id={id}
@@ -82,15 +102,21 @@ const PhotoElmnt = ({
       )}
       <img
         alt={title}
-        className={style("image")}
+        className={style["photo-card__image"]}
         src={`http://localhost:8000/${fileAddress}`}
       />
-      <div className={style("meatballs-menu")} onClick={handleIsMenuOpen}>
+      <div
+        className={style["photo-card__meatballs-menu"]}
+        onClick={handleIsMenuOpen}
+      >
         <span>{isMenuOpen ? "x" : "..."}</span>
       </div>
       {isTooltipActive && <ReactTooltip />}
-      <div className={style("photo-card-content")} onClick={handleDisplayPhoto}>
-        <ul className={style("info")}>{infoList}</ul>
+      <div
+        className={style["photo-card__photo-card-content"]}
+        onClick={handleDisplayPhoto}
+      >
+        <ul className={style["photo-card__info"]}>{infoList}</ul>
       </div>
     </div>
   );

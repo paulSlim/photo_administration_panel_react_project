@@ -1,25 +1,25 @@
 import { useState, useContext, useEffect, useRef } from "react";
 
-import bemCssModules from "bem-css-modules";
+// import bemCssModules from "bem-css-modules";
 import { StoreContext } from "../store/StoreProvider";
 
 import request from "../helpers/request";
 
 import Modal from "./Modal";
-import { default as LoginFormStyles } from "./LoginForm.module.scss";
+import style from "./LoginForm.module.scss";
 
-const style = bemCssModules(LoginFormStyles);
+// const style = bemCssModules(LoginFormStyles);
 
-const AddEditPhoto = () => {
-  const [selectedFile, setSelectedFile] = useState("");
-  const [description, setDescription] = useState("");
-  const [fileAddress, setFileAddress] = useState("");
-  const [id, setId] = useState("");
-  const [keywords, setKeywords] = useState([]);
-  const [theme, setTheme] = useState("");
-  const [title, setTitle] = useState("");
+const AddEditPhoto: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<string | File>("");
+  const [description, setDescription] = useState<string>("");
+  const [fileAddress, setFileAddress] = useState<string>("");
+  const [id, setId] = useState<string>("");
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [theme, setTheme] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
-  const fileInputRef = useRef();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     currentPhoto,
@@ -33,32 +33,33 @@ const AddEditPhoto = () => {
   } = useContext(StoreContext);
 
   const validationElement = validation.length ? (
-    <span className={style("validation")}>{validation}</span>
+    <span className={style["login-form__validation"]}>{validation}</span>
   ) : null;
 
-  const clearModalAddPhoto = () => {
+  const clearModalAddPhoto = (): void => {
     setSelectedFile("");
     setDescription("");
     setFileAddress("");
-    setKeywords("");
+    setKeywords([]);
     setTheme("");
     setTitle("");
   };
 
-  const handleCloseModal = (e) => {
+  const handleCloseModal = (e: Event): void => {
     e.preventDefault();
     handleClose();
   };
 
-  const handleFileInput = (e) => {
-    const file = e.target.files[0];
+  const handleFileInput = (e: Event): void => {
+    const target = e.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
     setSelectedFile(file);
     setFileAddress(file.name);
   };
 
-  const handlePhotoSubmit = async (e) => {
+  const handlePhotoSubmit = async (e: Event): Promise<void> => {
     e.preventDefault();
-    const dataForm = new FormData();
+    const dataForm: FormData = new FormData();
     dataForm.append("file", selectedFile);
     await request.post("/upload", dataForm).then((res) => {
       console.log(res.statusText);
@@ -68,7 +69,7 @@ const AddEditPhoto = () => {
       fileAddress,
       title,
       description,
-      keywords: keywords.split(","),
+      keywords: keywords,
       theme,
     });
     if (status === 201) {
@@ -79,28 +80,28 @@ const AddEditPhoto = () => {
     }
   };
 
-  const handlePhotoEdit = async (e) => {
+  const handlePhotoEdit = async (e: Event): Promise<void> => {
     e.preventDefault();
 
-    const keywordsSplit = () => {
-      const keywordsArray = keywords;
-      if (typeof keywordsArray === "string") {
-        if (keywordsArray.includes(",")) {
-          keywordsArray = keywords.split(",");
-        }
-        if (keywordsArray.includes(" ")) {
-          keywordsArray = keywords.split(" ");
-        }
-      }
-      return keywordsArray;
-    };
+    // const keywordsSplit = (): string[] => {
+    //   let keywordsArray = keywords;
+    //   if (typeof keywordsArray === "string") {
+    //     if (keywordsArray.includes(",")) {
+    //       keywordsArray = keywords.split(",");
+    //     }
+    //     if (keywordsArray.includes(" ")) {
+    //       keywordsArray = keywords.split(" ");
+    //     }
+    //   }
+    //   return keywordsArray;
+    // };
 
     const { data, status } = await request.put("/photos", {
       id,
       fileAddress,
       title,
       description,
-      keywords: keywordsSplit(),
+      keywords,
       theme,
     });
     if (status === 202) {
@@ -121,16 +122,16 @@ const AddEditPhoto = () => {
     if (isModalActive) {
       if (!editMode) {
         clearModalAddPhoto();
-        fileInputRef.current.value = "";
+        fileInputRef.current!.value = "";
       }
 
       if (editMode) {
-        setId(currentPhoto.id);
-        setFileAddress(currentPhoto.fileAddress);
-        setTitle(currentPhoto.title);
-        setDescription(currentPhoto.description);
-        setKeywords(currentPhoto.keywords);
-        setTheme(currentPhoto.theme);
+        setId(currentPhoto!.id);
+        setFileAddress(currentPhoto!.fileAddress);
+        setTitle(currentPhoto!.title);
+        setDescription(currentPhoto!.description);
+        setKeywords(currentPhoto!.keywords);
+        setTheme(currentPhoto!.theme);
       }
     }
   }, [isModalActive]);
@@ -143,27 +144,30 @@ const AddEditPhoto = () => {
     >
       {validationElement}
       <form
-        className={style()}
+        className={style["login-form"]}
         method={editMode ? "put" : "post"}
         encType="multipart/form-data"
-        onSubmit={editMode ? handlePhotoEdit : handlePhotoSubmit}
+        onSubmit={editMode ? (e) => handlePhotoEdit : (e) => handlePhotoSubmit}
       >
         {editMode ? null : (
-          <div className={style("login-input")}>
+          <div className={style["login-form__login-input"]}>
             <label>
               <br />
               Załaduj zdjęcie
               <input
-                onChange={handleFileInput}
-                onClick={(e) => (e.target.value = "")}
+                onChange={(e) => handleFileInput}
+                onClick={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  target.value = "";
+                }}
                 ref={fileInputRef}
                 type="file"
-                defaultValue={selectedFile}
+                defaultValue={""}
               />
             </label>
           </div>
         )}
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <label>
             Tytuł
             <input
@@ -173,7 +177,7 @@ const AddEditPhoto = () => {
             />
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <label>
             Opis
             <input
@@ -183,17 +187,17 @@ const AddEditPhoto = () => {
             />
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <label>
             Słowa kluczowe
             <input
-              onChange={(e) => setKeywords(e.target.value)}
+              onChange={(e) => setKeywords(e.target.value.split(","))}
               type="text"
               value={keywords}
             />
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <label>
             Temat
             <select onChange={(e) => setTheme(e.target.value)} value={theme}>
@@ -204,11 +208,11 @@ const AddEditPhoto = () => {
             </select>
           </label>
         </div>
-        <div className={style("login-input")}>
+        <div className={style["login-form__login-input"]}>
           <button type="submit">
             {editMode ? "Edytuj zdjęcie" : "Dodaj zdjęcie"}
           </button>
-          <button onClick={handleCloseModal}>Anuluj</button>
+          <button onClick={(e) => handleCloseModal}>Anuluj</button>
         </div>
       </form>
     </Modal>
