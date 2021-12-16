@@ -45,19 +45,19 @@ const AddEditPhoto: React.FC = () => {
     setTitle("");
   };
 
-  const handleCloseModal = (e: Event): void => {
+  const handleCloseModal = (e): void => {
     e.preventDefault();
     handleClose();
   };
 
-  const handleFileInput = (e: Event): void => {
+  const handleFileInput = (e): void => {
     const target = e.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
     setSelectedFile(file);
     setFileAddress(file.name);
   };
 
-  const handlePhotoSubmit = async (e: Event): Promise<void> => {
+  const handlePhotoSubmit = async (e): Promise<void> => {
     e.preventDefault();
     const dataForm: FormData = new FormData();
     dataForm.append("file", selectedFile);
@@ -80,7 +80,7 @@ const AddEditPhoto: React.FC = () => {
     }
   };
 
-  const handlePhotoEdit = async (e: Event): Promise<void> => {
+  const handlePhotoEdit = async (e): Promise<void> => {
     e.preventDefault();
 
     // const keywordsSplit = (): string[] => {
@@ -147,7 +147,7 @@ const AddEditPhoto: React.FC = () => {
         className={style["login-form"]}
         method={editMode ? "put" : "post"}
         encType="multipart/form-data"
-        onSubmit={editMode ? (e) => handlePhotoEdit : (e) => handlePhotoSubmit}
+        onSubmit={editMode ? handlePhotoEdit : handlePhotoSubmit}
       >
         {editMode ? null : (
           <div className={style["login-form__login-input"]}>
@@ -155,7 +155,7 @@ const AddEditPhoto: React.FC = () => {
               <br />
               Załaduj zdjęcie
               <input
-                onChange={(e) => handleFileInput}
+                onChange={handleFileInput}
                 onClick={(e) => {
                   const target = e.target as HTMLInputElement;
                   target.value = "";
@@ -212,7 +212,7 @@ const AddEditPhoto: React.FC = () => {
           <button type="submit">
             {editMode ? "Edytuj zdjęcie" : "Dodaj zdjęcie"}
           </button>
-          <button onClick={(e) => handleCloseModal}>Anuluj</button>
+          <button onClick={handleCloseModal}>Anuluj</button>
         </div>
       </form>
     </Modal>

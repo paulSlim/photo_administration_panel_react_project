@@ -24,7 +24,7 @@ const AddEditTheme: React.FC = () => {
     validation,
   } = useContext(StoreContext);
 
-  const handleAddTheme = async (e: Event): Promise<void> => {
+  const handleAddTheme = async (e): Promise<void> => {
     e.preventDefault();
     const { data, status } = await request.post("/themes", { themeName });
     if (status === 201) {
@@ -37,7 +37,7 @@ const AddEditTheme: React.FC = () => {
     <span className={style["login-form__validation"]}>{validation}</span>
   ) : null;
 
-  const handleCloseModal = (e: Event) => {
+  const handleCloseModal = (e) => {
     e.preventDefault();
     handleClose();
     setThemeName("");
@@ -65,7 +65,7 @@ const AddEditTheme: React.FC = () => {
         <ul>{themesList}</ul>
         <br />
         <h3>Dodaj temat</h3>
-        <form method="post" onSubmit={(e) => handleAddTheme}>
+        <form method="post" onSubmit={handleAddTheme}>
           <div className={style["login-form__login-input"]}>
             <label>
               Nazwa tematu
@@ -80,7 +80,7 @@ const AddEditTheme: React.FC = () => {
             <button type="submit" disabled={!themeName}>
               Dodaj temat
             </button>
-            <button onClick={(e) => handleCloseModal}>Anuluj</button>
+            <button onClick={handleCloseModal}>Anuluj</button>
           </div>
         </form>
       </div>
