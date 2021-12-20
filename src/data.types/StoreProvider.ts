@@ -15,6 +15,7 @@ export interface ModalContent {
   isEditPhotoActive: boolean;
   isDisplayPhotoActive: boolean;
   isLoginFormActive: boolean;
+  isBulkEditFormActive: boolean;
 }
 
 export interface Photo {

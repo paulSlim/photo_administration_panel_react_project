@@ -16,6 +16,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
 }) => {
   const {
     fetchPhotoData,
+    handleModalContent,
     selectedPhotoIds,
     setSelectedPhotoIds,
     setValidation,
@@ -41,6 +42,11 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
     }
   };
 
+  const handleModalContentAndClose = () => {
+    handleModalContent("isBulkEditFormActive");
+    setShowPanel(false);
+  };
+
   return (
     <div className={style["bulk-operations-panel"]}>
       <BulkOperationsPanelItem callback={deselectAllPhotos}>
@@ -48,6 +54,9 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
       </BulkOperationsPanelItem>
       <BulkOperationsPanelItem callback={deleteSelectedPhotos}>
         Usuń
+      </BulkOperationsPanelItem>
+      <BulkOperationsPanelItem callback={handleModalContentAndClose}>
+        Edytuj
       </BulkOperationsPanelItem>
     </div>
   );

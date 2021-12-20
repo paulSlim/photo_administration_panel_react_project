@@ -9,6 +9,7 @@ import AddEditTheme from "./AddEditTheme";
 import DisplayPhoto from "./DisplayPhoto";
 import LoginForm from "./LoginForm";
 import BulkOperationsPanel from "./BulkOperationsPanel";
+import BulkEditOperation from "./BulkEditOperation";
 
 // const style = bemCssModules(HeaderStyles);
 
@@ -16,6 +17,7 @@ const Header: React.FC = () => {
   const {
     handleModalContent,
     modalContent,
+    selectedPhotoIds,
     setEditMode,
     setFilteredWord,
     user,
@@ -46,7 +48,10 @@ const Header: React.FC = () => {
         <button onClick={() => handleModalContent("isLoginFormActive")}>
           {isUserLogged}
         </button>
-        <button onClick={() => setShowPanel(!showPanel)}>
+        <button
+          disabled={selectedPhotoIds.length <= 1}
+          onClick={() => setShowPanel(!showPanel)}
+        >
           Operacje masowe
         </button>
         {showPanel && <BulkOperationsPanel setShowPanel={setShowPanel} />}
@@ -55,6 +60,7 @@ const Header: React.FC = () => {
       {modalContent.isAddEditThemeActive && <AddEditTheme />}
       {modalContent.isDisplayPhotoActive && <DisplayPhoto />}
       {modalContent.isLoginFormActive && <LoginForm />}
+      {modalContent.isBulkEditFormActive && <BulkEditOperation />}
     </header>
   );
 };

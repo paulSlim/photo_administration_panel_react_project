@@ -35,6 +35,7 @@ const StoreProvider: React.FC<React.ReactNode> = ({
     isEditPhotoActive: false,
     isDisplayPhotoActive: false,
     isLoginFormActive: false,
+    isBulkEditFormActive: false,
   });
   const [selectedPhotoIds, setSelectedPhotoIds] = useState<SelectedPhotos[]>(
     []
@@ -95,6 +96,7 @@ const StoreProvider: React.FC<React.ReactNode> = ({
       isEditPhotoActive: false,
       isDisplayPhotoActive: false,
       isLoginFormActive: false,
+      isBulkEditFormActive: false,
     };
     switchModalTemp[property] = true;
     setModalContent(switchModalTemp);
