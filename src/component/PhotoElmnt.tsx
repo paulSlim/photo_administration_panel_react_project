@@ -77,7 +77,7 @@ const PhotoElmnt: React.FC<PhotoElement> = ({
         onMouseEnter={(e) => displayTooltip}
         onMouseLeave={hideTooltip}
       >
-        {value}
+        {key === "keywords" ? value.join(", ") : value}
       </li>
     );
   });

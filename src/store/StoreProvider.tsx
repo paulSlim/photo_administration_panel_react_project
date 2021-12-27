@@ -103,7 +103,10 @@ const StoreProvider: React.FC<React.ReactNode> = ({
   };
 
   const photoDelete = async (id: string): Promise<void> => {
-    const { data, status } = await request.delete(`/photos/${id}`);
+    const photosIds = [id];
+    const { data, status } = await request.delete("/photos", {
+      data: photosIds,
+    });
     if (status === 200) {
       fetchPhotoData();
     } else {
