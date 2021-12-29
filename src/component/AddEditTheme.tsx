@@ -6,6 +6,7 @@ import request from "../helpers/request";
 
 import Modal from "./Modal";
 import ThemeElement from "./ThemeElement";
+import ValidationMessage from "./ValidationMessage";
 
 import style from "./LoginForm.module.scss";
 
@@ -21,7 +22,6 @@ const AddEditTheme: React.FC = () => {
     isModalActive,
     setValidation,
     themes,
-    validation,
   } = useContext(StoreContext);
 
   const handleAddTheme = async (e): Promise<void> => {
@@ -32,10 +32,6 @@ const AddEditTheme: React.FC = () => {
       setThemeName("");
     } else setValidation(data.message);
   };
-
-  const validationElement = validation.length ? (
-    <span className={style["login-form__validation"]}>{validation}</span>
-  ) : null;
 
   const handleCloseModal = (e) => {
     e.preventDefault();
@@ -50,6 +46,7 @@ const AddEditTheme: React.FC = () => {
   useEffect(() => {
     if (isModalActive) {
       setThemeName("");
+      setValidation("");
     }
   }, [isModalActive]);
 
@@ -60,7 +57,7 @@ const AddEditTheme: React.FC = () => {
       handleClose={handleClose}
     >
       <div className={style["login-form"]}>
-        {validationElement}
+        <ValidationMessage />
         <h3>Lista tematów</h3>
         <ul>{themesList}</ul>
         <br />

@@ -6,6 +6,7 @@ import { StoreContext } from "../store/StoreProvider";
 import request from "../helpers/request";
 
 import Modal from "./Modal";
+import ValidationMessage from "./ValidationMessage";
 import style from "./LoginForm.module.scss";
 
 // const style = bemCssModules(LoginFormStyles);
@@ -29,12 +30,7 @@ const AddEditPhoto: React.FC = () => {
     isModalActive,
     themes,
     setValidation,
-    validation,
   } = useContext(StoreContext);
-
-  const validationElement = validation.length ? (
-    <span className={style["login-form__validation"]}>{validation}</span>
-  ) : null;
 
   const clearModalAddPhoto = (): void => {
     setSelectedFile("");
@@ -43,6 +39,7 @@ const AddEditPhoto: React.FC = () => {
     setKeywords([]);
     setTheme("");
     setTitle("");
+    setValidation("");
   };
 
   const handleCloseModal = (e): void => {
@@ -114,6 +111,7 @@ const AddEditPhoto: React.FC = () => {
   };
 
   const selectOptions = themes.map((theme) => ({
+    id: theme.id,
     label: theme.themeName,
     value: theme.themeName,
   }));
@@ -142,13 +140,13 @@ const AddEditPhoto: React.FC = () => {
       isModalActive={isModalActive}
       handleClose={handleClose}
     >
-      {validationElement}
       <form
         className={style["login-form"]}
         method={editMode ? "put" : "post"}
         encType="multipart/form-data"
         onSubmit={editMode ? handlePhotoEdit : handlePhotoSubmit}
       >
+        <ValidationMessage />
         {editMode ? null : (
           <div className={style["login-form__login-input"]}>
             <label>
@@ -203,7 +201,9 @@ const AddEditPhoto: React.FC = () => {
             <select onChange={(e) => setTheme(e.target.value)} value={theme}>
               <option value="none">none</option>
               {selectOptions.map((option) => (
-                <option value={option.value}>{option.label}</option>
+                <option key={option.id} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </select>
           </label>

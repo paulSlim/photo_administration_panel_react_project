@@ -45,7 +45,10 @@ const Header: React.FC = () => {
           type="text"
           onChange={(e) => setFilteredWord(e.target.value.toLowerCase())}
         />
-        <button onClick={() => handleModalContent("isLoginFormActive")}>
+        <button
+          disabled
+          onClick={() => handleModalContent("isLoginFormActive")}
+        >
           {isUserLogged}
         </button>
         <button
