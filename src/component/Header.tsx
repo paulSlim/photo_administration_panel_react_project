@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 
-// import bemCssModules from "bem-css-modules";
 import style from "./Header.module.scss";
 import { StoreContext } from "../store/StoreProvider";
 
@@ -10,8 +9,6 @@ import DisplayPhoto from "./DisplayPhoto";
 import LoginForm from "./LoginForm";
 import BulkOperationsPanel from "./BulkOperationsPanel";
 import BulkEditOperation from "./BulkEditOperation";
-
-// const style = bemCssModules(HeaderStyles);
 
 const Header: React.FC = () => {
   const {
@@ -51,13 +48,17 @@ const Header: React.FC = () => {
         >
           {isUserLogged}
         </button>
-        <button
-          disabled={selectedPhotoIds.length <= 1}
-          onClick={() => setShowPanel(!showPanel)}
+        <div
+          className={style["header__btn-container__bulk-edit-btn-container"]}
         >
-          Operacje masowe
-        </button>
-        {showPanel && <BulkOperationsPanel setShowPanel={setShowPanel} />}
+          <button
+            disabled={selectedPhotoIds.length <= 1}
+            onClick={() => setShowPanel(!showPanel)}
+          >
+            Operacje masowe
+          </button>
+          {showPanel && <BulkOperationsPanel setShowPanel={setShowPanel} />}
+        </div>
       </div>
       {modalContent.isAddEditPhotoActive && <AddEditPhoto />}
       {modalContent.isAddEditThemeActive && <AddEditTheme />}

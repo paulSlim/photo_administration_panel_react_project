@@ -3,6 +3,7 @@
 interface CssExports {
   'header': string;
   'header__btn-container': string;
+  'header__btn-container__bulk-edit-btn-container': string;
   'header__title': string;
 }
 export const cssExports: CssExports;
